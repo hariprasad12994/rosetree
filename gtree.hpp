@@ -68,4 +68,83 @@ struct Iterator {
     node_pointer ptr_;
 };
 
+template <typename T>
+class Tree {
+  public:
+  using value_type = T;
+  using node = TreeNode<T>;
+  using node_pointer = TreeNode<T>*;
+  using iterator = Iterator<Tree<T>>;
 
+  Tree() {}
+  Tree(TreeNode<T>* head): tree(head) {}
+
+  auto begin() -> iterator {
+    return iterator(tree);
+  }
+
+  auto end() -> iterator {
+    return iterator(nullptr);
+  }
+
+  auto insert_below(iterator node, T data) -> void {
+    TreeNode<T>* new_node = new TreeNode<T>(data);
+    if(node->first_child == nullptr){
+      node->first_child = new_node;
+      return;
+    }
+    auto tmp = node->first_child;
+    node->first_child = new_node;
+    new_node->first_sibling = tmp;
+  }
+
+  auto insert below(T key, T data) -> void {
+    iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
+    if(it == end()) {
+      std::cout << "Key " << key << " not found" << '\n';
+      // todo throw key error
+      return;
+    }
+    insert_below(it, data);
+  }
+
+  auto insert_after(iterator node, T data) -> void {
+    TreeNode<T>* new_node = new TreeNode<T>(data);
+    if(node->first_sibling == nullptr) {
+      node->first_sibling = new_node;
+      return;
+    }
+    auto tmp = node->first_sibling;
+    node->first_sibling = new_node;
+    new_node->first_sibling = tmp;
+  }
+
+  auto insert_after(T key, T data) -> void {
+    iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
+    if(it == end()) {
+        std::cout << "Key " << key << " not found" << '\n';
+        return;
+    }
+    insert_after(it, data);
+  }
+
+  auto append_child(iterator node, T data) -> void {
+    auto walker = node->first_child;
+    while(walker->first_sibling != nullptr){
+      walker = walker->first_sibling;
+    }
+    insert_after(walker, data);
+  }
+
+  auto append_child(T key, T data) -> void {
+    iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
+    if(it == end()) {
+        std::cout << "Key " << key << " not found" << '\n';
+        return;
+    }
+    append_child(it, data);
+  }
+  
+  private:
+  TreeNode<T>* tree;
+};
