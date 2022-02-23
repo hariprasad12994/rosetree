@@ -2,6 +2,8 @@
 #include <queue>
 #include <iostream>
 
+// refer - https://course.ccs.neu.edu/cs5010f18/lecture9.html
+// refer - multiple iter - https://stackoverflow.com/questions/25105730/range-based-for-loops-and-multiple-iterators
 
 template <typename T>
 class TreeNode {
@@ -77,6 +79,10 @@ class Tree {
   using node_pointer = TreeNode<T>*;
   using iterator = Iterator<Tree<T>>;
 
+  // todo? class Compare as template parameter
+  // todo? class Allocator<T> as template paramter
+  // todo: add special memeber functions
+
   Tree() {}
   Tree(TreeNode<T>* head): tree(head) {}
 
@@ -87,7 +93,21 @@ class Tree {
   auto end() -> iterator {
     return iterator(nullptr);
   }
-
+  
+  // refer - // https://stackoverflow.com/questions/26198350/c-stacks-push-vs-emplace/26198609
+  // refer - // https://stackoverflow.com/questions/17172080/insert-vs-emplace-vs-operator-in-c-map
+  // todo: switch to unique_ptr for leak protection
+  // todo: dfs iterators - pre, post and inorder traversal, sibling iterator
+  // todo: insert at, insert after, insert below
+  // todo: emplace at, emplace after, emplace below, try emplace
+  // todo: append_child, prepend_child
+  // todo: clear, erase, delete at
+  // todo: merge
+  // todo: paths, relationship APIs
+  // todo: [] operator
+  // todo: shallow and depp copy friendly iterators
+  // todo: traversal caches
+  //
   auto insert_below(iterator node, T data) -> void {
     TreeNode<T>* new_node = new TreeNode<T>(data);
     if(node->first_child == nullptr){
