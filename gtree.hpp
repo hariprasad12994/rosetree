@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <queue>
+#include <iostream>
 
 
 template <typename T>
@@ -98,7 +99,7 @@ class Tree {
     new_node->first_sibling = tmp;
   }
 
-  auto insert below(T key, T data) -> void {
+  auto insert_below(T key, T data) -> void {
     iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
     if(it == end()) {
       std::cout << "Key " << key << " not found" << '\n';
