@@ -25,7 +25,7 @@ struct Iterator {
     using difference_type = std::ptrdiff_t;
     using value_type = typename Tree::value_type;
     using pointer = value_type*;
-    using reference = value_type;
+    using reference = value_type&;
 
     using node = typename Tree::node;
     using node_pointer = node*;
