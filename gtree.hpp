@@ -1,9 +1,12 @@
 #include <algorithm>
 #include <queue>
+#include <stack>
 #include <iostream>
 
 // refer - https://course.ccs.neu.edu/cs5010f18/lecture9.html
 // refer - multiple iter - https://stackoverflow.com/questions/25105730/range-based-for-loops-and-multiple-iterators
+// https://www.fluentcpp.com/2021/09/02/how-to-make-your-classes-compatible-with-range-for-loop/
+// https://algotree.org/algorithms/tree_graph_traversal/
 
 template <typename T>
 class TreeNode {
@@ -17,6 +20,73 @@ class TreeNode {
     TreeNode(T&& val): value(val), first_child(nullptr), first_sibling(nullptr) {}
 };
 
+template <typename Tree>
+struct DepthIterator {
+  public:
+    using iterator_category = std::forward_iterator_tag;
+    using difference_type = std::ptrdiff_t;
+    using value_type = typename Tree::value_type;
+    using pointer = value_type*;
+    using reference = value_type&;
+
+    using node = typename Tree::node;
+    using node_pointer = node*;
+    using node_reference = node&;
+
+    DepthIterator(node_pointer ptr): ptr_(ptr) {
+      s.push(ptr);
+    }
+
+    auto operator*() const -> reference {
+      return ptr_->value;
+    }
+
+    auto operator->() -> node_pointer {
+      return ptr_;
+    }
+
+    auto operator++() -> DepthIterator& {
+      if(s.top()->first_child != nullptr) {
+          s.push(s.top()->first_child);
+      }
+      else if(s.top()->first_sibling != nullptr) {
+          auto tmp = s.top();
+          s.pop();
+          s.push(tmp->first_sibling);
+      }
+      else{
+        while(!s.empty() && s.top()->first_sibling == nullptr) {
+          s.pop();
+        }
+        if(!s.empty()) {
+            auto tmp = s.top();
+            s.pop();
+            s.push(tmp->first_sibling);
+        }
+      }
+      if(!s.empty()) {
+          ptr_ = s.top();
+      }
+      else {
+          ptr_ = nullptr;
+      }
+
+      return *this;
+    }
+
+    auto operator++(int) -> DepthIterator {
+      DepthIterator tmp  =*this;
+      ++(*this);
+      return tmp;
+    }
+
+    friend bool operator==(const DepthIterator& a, const DepthIterator& b) { return a.ptr_ == b.ptr_; }
+    friend bool operator!=(const DepthIterator& a, const DepthIterator& b) { return a.ptr_ != b.ptr_; }
+
+  private:
+    node_pointer ptr_;
+    std::stack<node_pointer> s;
+};
 
 template <typename Tree>
 struct Iterator {
@@ -165,7 +235,10 @@ class Tree {
     }
     append_child(it, data);
   }
-  
+
+  auto remove(iterator node) -> void {
+  }
+
   private:
   TreeNode<T>* tree;
 };
