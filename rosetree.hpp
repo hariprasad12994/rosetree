@@ -21,6 +21,73 @@ class TreeNode {
 };
 
 template <typename Tree>
+struct PostOrderIterator{
+  public:
+    using iterator_category = std::forward_iterator_tag;
+    using difference_type = std::ptrdiff_t;
+    using value_type = typename Tree::value_type;
+    using pointer = value_type*;
+    using reference = value_type&;
+    
+    using node = typename Tree::node;
+    using node_pointer = node*;
+    using node_reference = node&;
+
+    PostOrderIterator(node_pointer ptr) {
+      auto walker = ptr;
+      while(walker != nullptr) {
+        s.push(walker);
+        walker = walker->first_child;
+      }
+      if(!s.empty()) {
+        ptr_ = s.top(); 
+        //s.pop();
+      }
+      else { ptr_ = nullptr; }
+    }
+    
+    auto operator*() const -> reference { return ptr_->value; }
+
+    auto operator->() -> node_pointer { return ptr_; }
+
+    auto operator++() -> PostOrderIterator& {
+      if(s.empty()) {
+        ptr_ = nullptr;
+        return *this;
+      }
+
+      auto tmp = s.top();
+      s.pop();
+      if(!s.empty()){
+        if(tmp->first_sibling != nullptr) {
+          s.push(tmp->first_sibling);
+          auto walker = tmp->first_sibling->first_child;
+          while(walker != nullptr) {
+            s.push(walker);
+            walker = walker->first_child;
+          }
+        }
+        ptr_ = s.top();
+      }
+      else{ ptr_ = nullptr; }
+      return *this;
+    }
+
+    auto operator++(int) -> PostOrderIterator {
+      PostOrderIterator tmp = *this;
+      ++(*this);
+      return tmp;
+    }
+
+    friend bool operator==(const PostOrderIterator& a, const PostOrderIterator& b) { return a.ptr_ == b.ptr_; }
+    friend bool operator!=(const PostOrderIterator& a, const PostOrderIterator& b) { return a.ptr_ != b.ptr_; }
+
+  private:
+    node_pointer ptr_;
+    std::stack<node_pointer> s;
+};
+
+template <typename Tree>
 struct DepthIterator {
   public:
     using iterator_category = std::forward_iterator_tag;
@@ -147,7 +214,7 @@ class Tree {
   using value_type = T;
   using node = TreeNode<T>;
   using node_pointer = TreeNode<T>*;
-  using iterator = Iterator<Tree<T>>;
+  using iterator = PostOrderIterator<Tree<T>>;
 
   // todo? class Compare as template parameter
   // todo? class Allocator<T> as template paramter
@@ -166,6 +233,7 @@ class Tree {
   
   // refer - // https://stackoverflow.com/questions/26198350/c-stacks-push-vs-emplace/26198609
   // refer - // https://stackoverflow.com/questions/17172080/insert-vs-emplace-vs-operator-in-c-map
+  //https://codereview.stackexchange.com/questions/214882/binary-search-tree-implementation-with-unique-pointers
   // todo: switch to unique_ptr for leak protection
   // todo: dfs iterators - pre, post and inorder traversal, sibling iterator
   // todo: insert at, insert after, insert below
@@ -220,8 +288,19 @@ class Tree {
   }
 
   auto append_child(iterator node, T data) -> void {
-    auto walker = node->first_child;
-    while(walker->first_sibling != nullptr){
+    if(node->first_child == nullptr) {
+      TreeNode<T>* new_node = new TreeNode<T>(data);
+      node->first_child = new_node;
+      return;
+    }
+    auto first_child = node->first_child;
+    if(first_child->first_sibling == nullptr) {
+      TreeNode<T>* new_node = new TreeNode<T>(data);
+      first_child->first_sibling = new_node;
+      return;
+    }
+    auto walker = first_child;
+    while(walker->first_sibling != nullptr) {
       walker = walker->first_sibling;
     }
     insert_after(walker, data);
