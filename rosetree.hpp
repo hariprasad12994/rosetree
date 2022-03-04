@@ -1,3 +1,6 @@
+#ifndef ROSETREE_H
+#define ROSETREE_H
+
 #include <algorithm>
 #include <queue>
 #include <stack>
@@ -321,3 +324,6 @@ class Tree {
   private:
   TreeNode<T>* tree;
 };
+
+#endif /*ROSETREE_H*/
+
