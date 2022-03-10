@@ -91,7 +91,7 @@ struct PostOrderIterator{
 };
 
 template <typename Tree>
-struct DepthIterator {
+struct PreOrderIterator {
   public:
     using iterator_category = std::forward_iterator_tag;
     using difference_type = std::ptrdiff_t;
@@ -103,7 +103,7 @@ struct DepthIterator {
     using node_pointer = node*;
     using node_reference = node&;
 
-    DepthIterator(node_pointer ptr): ptr_(ptr) {
+    PreOrderIterator(node_pointer ptr): ptr_(ptr) {
       s.push(ptr);
     }
 
@@ -115,7 +115,7 @@ struct DepthIterator {
       return ptr_;
     }
 
-    auto operator++() -> DepthIterator& {
+    auto operator++() -> PreOrderIterator& {
       if(s.top()->first_child != nullptr) {
           s.push(s.top()->first_child);
       }
@@ -144,14 +144,14 @@ struct DepthIterator {
       return *this;
     }
 
-    auto operator++(int) -> DepthIterator {
-      DepthIterator tmp  =*this;
+    auto operator++(int) -> PreOrderIterator {
+      PreOrderIterator tmp  =*this;
       ++(*this);
       return tmp;
     }
 
-    friend bool operator==(const DepthIterator& a, const DepthIterator& b) { return a.ptr_ == b.ptr_; }
-    friend bool operator!=(const DepthIterator& a, const DepthIterator& b) { return a.ptr_ != b.ptr_; }
+    friend bool operator==(const PreOrderIterator& a, const PreOrderIterator& b) { return a.ptr_ == b.ptr_; }
+    friend bool operator!=(const PreOrderIterator& a, const PreOrderIterator& b) { return a.ptr_ != b.ptr_; }
 
   private:
     node_pointer ptr_;
@@ -159,7 +159,7 @@ struct DepthIterator {
 };
 
 template <typename Tree>
-struct Iterator {
+struct LevelOrderIterator {
   public:
     using iterator_category = std::forward_iterator_tag;
     using difference_type = std::ptrdiff_t;
@@ -171,7 +171,7 @@ struct Iterator {
     using node_pointer = node*;
     using node_reference = node&;
 
-    Iterator(node_pointer ptr): ptr_(ptr) {}
+    LevelOrderIterator(node_pointer ptr): ptr_(ptr) {}
 
     auto operator*() const -> reference {
       return ptr_->value;
@@ -181,7 +181,7 @@ struct Iterator {
       return ptr_;
     }
 
-    auto operator++() -> Iterator& {
+    auto operator++() -> LevelOrderIterator& {
       node_pointer walker = ptr_->first_child;
       while(walker != nullptr){
         q.push(walker);
@@ -197,14 +197,14 @@ struct Iterator {
       return *this;
     }
 
-    auto operator++(int) -> Iterator {
-      Iterator tmp = *this;
+    auto operator++(int) -> LevelOrderIterator {
+      LevelOrderIterator tmp = *this;
       ++(*this);
       return tmp;
     }
 
-    friend bool operator==(const Iterator& a, const Iterator& b) { return a.ptr_ == b.ptr_; }
-    friend bool operator!=(const Iterator& a, const Iterator& b) { return a.ptr_ != b.ptr_; }
+    friend bool operator==(const LevelOrderIterator& a, const LevelOrderIterator& b) { return a.ptr_ == b.ptr_; }
+    friend bool operator!=(const LevelOrderIterator& a, const LevelOrderIterator& b) { return a.ptr_ != b.ptr_; }
 
   private:
     std::queue<node_pointer> q;
@@ -217,7 +217,7 @@ class Tree {
   using value_type = T;
   using node = TreeNode<T>;
   using node_pointer = TreeNode<T>*;
-  using iterator = PostOrderIterator<Tree<T>>;
+  using iterator = PreOrderIterator<Tree<T>>;
 
   // todo? class Compare as template parameter
   // todo? class Allocator<T> as template paramter
