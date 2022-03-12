@@ -4,7 +4,7 @@
 #include <string>
 
 auto main(void) -> int {
-  auto path_tree = Tree<std::string>(new TreeNode<std::string>("/"));
+  auto path_tree = Tree(new TreeNode<std::string>("/"));
   
   path_tree.insert_below(path_tree.begin(), std::string("boot/"));
   path_tree.append_child(path_tree.begin(), std::string("bin/"));
@@ -30,6 +30,11 @@ auto main(void) -> int {
 
   // range based for-loop
   for(auto tree_elem: path_tree) {
+    std::cout << tree_elem << " ";
+  }
+  std::cout << '\n';
+
+  for(auto tree_elem: tree_as_level_order(path_tree.begin())) {
     std::cout << tree_elem << " ";
   }
   std::cout << '\n';
