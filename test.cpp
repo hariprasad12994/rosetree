@@ -39,5 +39,10 @@ auto main(void) -> int {
   }
   std::cout << '\n';
 
+  for(auto tree_elem: tree_as_post_order(path_tree.begin())) {
+    std::cout << tree_elem << " ";
+  }
+  std::cout << '\n';
+
   return 0;
 }
