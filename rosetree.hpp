@@ -30,6 +30,9 @@ template <typename Tree>
 class tree_as_post_order;
 
 template <typename Tree>
+class tree_as_pre_order;
+
+template <typename Tree>
 struct PostOrderIterator{
   public:
     using iterator_category = std::forward_iterator_tag;
@@ -160,6 +163,7 @@ struct PreOrderIterator {
     friend bool operator!=(const PreOrderIterator& a, const PreOrderIterator& b) { return a.ptr_ != b.ptr_; }
     friend class tree_as_level_order<Tree>;
     friend class tree_as_post_order<Tree>;
+    friend class tree_as_pre_order<Tree>;
 
   private:
     node_pointer ptr_;
@@ -359,6 +363,20 @@ class tree_as_post_order {
     tree_as_post_order(const iterator& it): begin_(it.ptr_), end_(it.ptr_->first_sibling) {}
     post_order_iterator begin() { return begin_; }
     post_order_iterator end() { return end_; }
+};
+
+template<typename Tree>
+class tree_as_pre_order{
+  private:
+    using iterator = PreOrderIterator<Tree>;
+    using pre_order_iterator = PreOrderIterator<Tree>;
+    pre_order_iterator begin_;
+    pre_order_iterator end_;
+
+  public:
+    tree_as_pre_order(const iterator& it): begin_(it.ptr_), end_(it.ptr_->first_sibling) {}
+    pre_order_iterator begin() { return begin_; }
+    pre_order_iterator end() { return end_; }
 };
 
 #endif /*ROSETREE_H*/
