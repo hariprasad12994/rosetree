@@ -44,5 +44,24 @@ auto main(void) -> int {
   }
   std::cout << '\n';
 
+  for(auto tree_elem: tree_as_pre_order(path_tree.begin())) {
+    std::cout << tree_elem << " ";
+  }
+  std::cout << '\n';
+
+  auto it = std::find_if(path_tree.begin(), path_tree.end(), [](auto elem){ return elem == std::string("usr/"); });
+  for(auto tree_elem: tree_as_pre_order(it)) {
+    std::cout << tree_elem << " ";
+  }
+  std::cout << '\n';
+  //for(auto tree_elem: tree_as_post_order(it)) {
+    //std::cout << tree_elem << " ";
+  //}
+  //std::cout << '\n';
+  //for(auto tree_elem: tree_as_level_order(it)) {
+    //std::cout << tree_elem << " ";
+  //}
+  //std::cout << '\n';
+
   return 0;
 }
