@@ -346,7 +346,7 @@ class tree_as_level_order {
     level_iterator end_;
 
   public:
-    tree_as_level_order(const iterator& it): begin_(it.ptr_), end_(it.ptr_->first_sibling) {}
+    tree_as_level_order(const iterator& it): begin_(it.ptr_), end_(nullptr) {}
     level_iterator begin() { return begin_; }
     level_iterator end() { return end_; }
 };
@@ -360,7 +360,7 @@ class tree_as_post_order {
     post_order_iterator end_;
 
   public:
-    tree_as_post_order(const iterator& it): begin_(it.ptr_), end_(it.ptr_->first_sibling) {}
+    tree_as_post_order(const iterator& it): begin_(it.ptr_), end_(nullptr) {}
     post_order_iterator begin() { return begin_; }
     post_order_iterator end() { return end_; }
 };
