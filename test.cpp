@@ -54,14 +54,14 @@ auto main(void) -> int {
     std::cout << tree_elem << " ";
   }
   std::cout << '\n';
-  //for(auto tree_elem: tree_as_post_order(it)) {
-    //std::cout << tree_elem << " ";
-  //}
-  //std::cout << '\n';
-  //for(auto tree_elem: tree_as_level_order(it)) {
-    //std::cout << tree_elem << " ";
-  //}
-  //std::cout << '\n';
+  for(auto tree_elem: tree_as_post_order(it)) {
+    std::cout << tree_elem << " ";
+  }
+  std::cout << '\n';
+  for(auto tree_elem: tree_as_level_order(it)) {
+    std::cout << tree_elem << " ";
+  }
+  std::cout << '\n';
 
   return 0;
 }
