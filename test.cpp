@@ -1,7 +1,18 @@
-// test file
+// test file 
 #include "rosetree.hpp"
 #include <iostream>
+#include <sstream>
 #include <string>
+
+
+// https://stackoverflow.com/questions/5973427/error-passing-xxx-as-this-argument-of-xxx-discards-qualifiers
+
+template <typename T, typename IteratorProxy>
+auto tree_to_sstream(PreOrderIterator<Tree<T>> tree, std::stringstream& stream) -> void {
+  for(auto tree_elem: IteratorProxy(tree)) {
+    stream << tree_elem << " ";
+  }
+}
 
 auto main(void) -> int {
   auto path_tree = Tree(new TreeNode<std::string>("/"));
@@ -62,6 +73,18 @@ auto main(void) -> int {
     std::cout << tree_elem << " ";
   }
   std::cout << '\n';
+
+  std::stringstream stream_pre_order;
+  tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(path_tree.begin(), stream_pre_order);
+  std::cout << stream_pre_order.str() << '\n';
+
+  std::stringstream stream_post_order;
+  tree_to_sstream<std::string, tree_as_post_order<Tree<std::string>>>(path_tree.begin(), stream_post_order);
+  std::cout << stream_post_order.str() << '\n';
+  
+  std::stringstream stream_level_order;
+  tree_to_sstream<std::string, tree_as_level_order<Tree<std::string>>>(it, stream_level_order);
+  std::cout << stream_level_order.str() << '\n';
 
   return 0;
 }
