@@ -3,8 +3,19 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <cassert>
 
 // https://stackoverflow.com/questions/5973427/error-passing-xxx-as-this-argument-of-xxx-discards-qualifiers
+
+auto test_plain_preorder_for_loop(Tree<std::string>& tree) -> void {
+  std::string expected_op = "/ boot/ bin/ var/ tmp/ etc/ usr/ hari/ Projects/ Documents/ admin/ opt/ ";
+  std::stringstream op;
+
+  for(auto it = tree.begin(); it != tree.end(); it++) {
+    op << *it << " ";
+  }
+  assert(op.str() == expected_op);
+}
 
 auto main(void) -> int {
   auto path_tree = Tree(new TreeNode<std::string>("/"));
@@ -20,6 +31,8 @@ auto main(void) -> int {
   path_tree.insert_below(std::string("hari/"), std::string("Documents/"));
   path_tree.insert_below(std::string("hari/"), std::string("Projects/"));
   path_tree.append_child(std::string("usr/"), std::string("admin/"));
+
+  test_plain_preorder_for_loop(path_tree);
 
   // plain iterator based for loop
   for(auto it = path_tree.begin(); it != path_tree.end(); it++) {
