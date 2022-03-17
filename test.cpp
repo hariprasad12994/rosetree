@@ -7,13 +7,72 @@
 
 // https://stackoverflow.com/questions/5973427/error-passing-xxx-as-this-argument-of-xxx-discards-qualifiers
 
-auto test_plain_preorder_for_loop(Tree<std::string>& tree) -> void {
+auto test_preorder_plain_for_loop(Tree<std::string>& tree) -> void {
   std::string expected_op = "/ boot/ bin/ var/ tmp/ etc/ usr/ hari/ Projects/ Documents/ admin/ opt/ ";
   std::stringstream op;
 
   for(auto it = tree.begin(); it != tree.end(); it++) {
     op << *it << " ";
   }
+  assert(op.str() == expected_op);
+}
+
+auto test_preorder_stl_for_each(Tree<std::string>& tree) -> void {
+  std::string expected_op = "/ boot/ bin/ var/ tmp/ etc/ usr/ hari/ Projects/ Documents/ admin/ opt/ ";
+  std::stringstream op;
+
+  std::for_each(tree.begin(), tree.end(), [&op](auto elem) { op << elem << " "; });
+  assert(op.str() == expected_op);
+}
+
+auto test_preorder_range_for_loop(Tree<std::string>& tree) -> void {
+  std::string expected_op = "/ boot/ bin/ var/ tmp/ etc/ usr/ hari/ Projects/ Documents/ admin/ opt/ ";
+  std::stringstream op;
+
+  tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(tree.begin(), op);
+  assert(op.str() == expected_op);
+}
+
+auto test_postorder_range_for_loop(Tree<std::string>& tree) -> void {
+  std::string expected_op = "boot/ bin/ tmp/ var/ etc/ Projects/ Documents/ hari/ admin/ usr/ opt/ / ";
+  std::stringstream op;
+
+  tree_to_sstream<std::string, tree_as_post_order<Tree<std::string>>>(tree.begin(), op);
+  assert(op.str() == expected_op);
+}
+
+auto test_levelorder_range_for_loop(Tree<std::string>& tree) -> void {
+  std::string expected_op = "/ boot/ bin/ var/ etc/ usr/ opt/ tmp/ hari/ admin/ Projects/ Documents/ ";
+  std::stringstream op;
+
+  tree_to_sstream<std::string, tree_as_level_order<Tree<std::string>>>(tree.begin(), op);
+  assert(op.str() == expected_op);
+}
+
+auto test_preorder_subtree_traversal(Tree<std::string>& tree) -> void {
+  std::string expected_op = "usr/ hari/ Projects/ Documents/ admin/ ";
+  std::stringstream op;
+
+  auto it = std::find_if(tree.begin(), tree.end(), [](auto elem){ return elem == std::string("usr/"); });
+  tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(it, op);
+  assert(op.str() == expected_op);
+}
+
+auto test_postorder_subtree_traversal(Tree<std::string>& tree) -> void {
+  std::string expected_op = "Projects/ Documents/ hari/ admin/ usr/ ";
+  std::stringstream op;
+
+  auto it = std::find_if(tree.begin(), tree.end(), [](auto elem){ return elem == std::string("usr/"); });
+  tree_to_sstream<std::string, tree_as_post_order<Tree<std::string>>>(it, op);
+  assert(op.str() == expected_op);
+}
+
+auto test_levelorder_subtree_traversal(Tree<std::string>& tree) -> void {
+  std::string expected_op = "usr/ hari/ admin/ Projects/ Documents/ ";
+  std::stringstream op;
+
+  auto it = std::find_if(tree.begin(), tree.end(), [](auto elem){ return elem == std::string("usr/"); });
+  tree_to_sstream<std::string, tree_as_level_order<Tree<std::string>>>(it, op);
   assert(op.str() == expected_op);
 }
 
@@ -32,64 +91,14 @@ auto main(void) -> int {
   path_tree.insert_below(std::string("hari/"), std::string("Projects/"));
   path_tree.append_child(std::string("usr/"), std::string("admin/"));
 
-  test_plain_preorder_for_loop(path_tree);
-
-  // plain iterator based for loop
-  for(auto it = path_tree.begin(); it != path_tree.end(); it++) {
-    std::cout << *it << " ";
-  }
-  std::cout << '\n';
-
-  // stl for_each based iteration
-  std::for_each(path_tree.begin(), path_tree.end(), [](auto elem) { std::cout << elem << " "; });
-  std::cout << '\n';
-
-  // range based for-loop
-  for(auto tree_elem: path_tree) {
-    std::cout << tree_elem << " ";
-  }
-  std::cout << '\n';
-
-  for(auto tree_elem: tree_as_level_order(path_tree.begin())) {
-    std::cout << tree_elem << " ";
-  }
-  std::cout << '\n';
-
-  for(auto tree_elem: tree_as_post_order(path_tree.begin())) {
-    std::cout << tree_elem << " ";
-  }
-  std::cout << '\n';
-
-  for(auto tree_elem: tree_as_pre_order(path_tree.begin())) {
-    std::cout << tree_elem << " ";
-  }
-  std::cout << '\n';
-
-  auto it = std::find_if(path_tree.begin(), path_tree.end(), [](auto elem){ return elem == std::string("usr/"); });
-  for(auto tree_elem: tree_as_pre_order(it)) {
-    std::cout << tree_elem << " ";
-  }
-  std::cout << '\n';
-  for(auto tree_elem: tree_as_post_order(it)) {
-    std::cout << tree_elem << " ";
-  }
-  std::cout << '\n';
-  for(auto tree_elem: tree_as_level_order(it)) {
-    std::cout << tree_elem << " ";
-  }
-  std::cout << '\n';
-
-  std::stringstream stream_pre_order;
-  tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(path_tree.begin(), stream_pre_order);
-  std::cout << stream_pre_order.str() << '\n';
-
-  std::stringstream stream_post_order;
-  tree_to_sstream<std::string, tree_as_post_order<Tree<std::string>>>(path_tree.begin(), stream_post_order);
-  std::cout << stream_post_order.str() << '\n';
-  
-  std::stringstream stream_level_order;
-  tree_to_sstream<std::string, tree_as_level_order<Tree<std::string>>>(it, stream_level_order);
-  std::cout << stream_level_order.str() << '\n';
+  test_preorder_plain_for_loop(path_tree);
+  test_preorder_stl_for_each(path_tree);
+  test_preorder_range_for_loop(path_tree);
+  test_postorder_range_for_loop(path_tree);
+  test_levelorder_range_for_loop(path_tree);
+  test_levelorder_subtree_traversal(path_tree);
+  test_postorder_subtree_traversal(path_tree);
+  test_preorder_subtree_traversal(path_tree);
 
   return 0;
 }
