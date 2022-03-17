@@ -7,6 +7,42 @@
 
 // https://stackoverflow.com/questions/5973427/error-passing-xxx-as-this-argument-of-xxx-discards-qualifiers
 
+auto test_preorder_plain_for_loop(Tree<std::string>& path_tree) -> void;
+auto test_preorder_stl_for_each(Tree<std::string>& path_tree) -> void;
+auto test_preorder_range_for_loop(Tree<std::string>& path_tree) -> void;
+auto test_postorder_range_for_loop(Tree<std::string>& path_tree) -> void;
+auto test_levelorder_range_for_loop(Tree<std::string>& path_tree) -> void;
+auto test_levelorder_subtree_traversal(Tree<std::string>& path_tree) -> void;
+auto test_postorder_subtree_traversal(Tree<std::string>& path_tree) -> void;
+auto test_preorder_subtree_traversal(Tree<std::string>& path_tree) -> void;
+
+auto main(void) -> int {
+  auto path_tree = Tree(new TreeNode<std::string>("/"));
+  
+  path_tree.insert_below(path_tree.begin(), std::string("boot/"));
+  path_tree.append_child(path_tree.begin(), std::string("bin/"));
+  path_tree.append_child(path_tree.begin(), std::string("var/"));
+  path_tree.append_child(path_tree.begin(), std::string("usr/"));
+  path_tree.insert_below(std::string("var/"), std::string("tmp/"));
+  path_tree.append_child(std::string("/"), std::string("opt/"));
+  path_tree.insert_after(std::string("var/"), std::string("etc/"));
+  path_tree.insert_below(std::string("usr/"), std::string("hari/"));
+  path_tree.insert_below(std::string("hari/"), std::string("Documents/"));
+  path_tree.insert_below(std::string("hari/"), std::string("Projects/"));
+  path_tree.append_child(std::string("usr/"), std::string("admin/"));
+
+  test_preorder_plain_for_loop(path_tree);
+  test_preorder_stl_for_each(path_tree);
+  test_preorder_range_for_loop(path_tree);
+  test_postorder_range_for_loop(path_tree);
+  test_levelorder_range_for_loop(path_tree);
+  test_levelorder_subtree_traversal(path_tree);
+  test_postorder_subtree_traversal(path_tree);
+  test_preorder_subtree_traversal(path_tree);
+
+  return 0;
+}
+
 auto test_preorder_plain_for_loop(Tree<std::string>& tree) -> void {
   std::string expected_op = "/ boot/ bin/ var/ tmp/ etc/ usr/ hari/ Projects/ Documents/ admin/ opt/ ";
   std::stringstream op;
@@ -76,29 +112,3 @@ auto test_levelorder_subtree_traversal(Tree<std::string>& tree) -> void {
   assert(op.str() == expected_op);
 }
 
-auto main(void) -> int {
-  auto path_tree = Tree(new TreeNode<std::string>("/"));
-  
-  path_tree.insert_below(path_tree.begin(), std::string("boot/"));
-  path_tree.append_child(path_tree.begin(), std::string("bin/"));
-  path_tree.append_child(path_tree.begin(), std::string("var/"));
-  path_tree.append_child(path_tree.begin(), std::string("usr/"));
-  path_tree.insert_below(std::string("var/"), std::string("tmp/"));
-  path_tree.append_child(std::string("/"), std::string("opt/"));
-  path_tree.insert_after(std::string("var/"), std::string("etc/"));
-  path_tree.insert_below(std::string("usr/"), std::string("hari/"));
-  path_tree.insert_below(std::string("hari/"), std::string("Documents/"));
-  path_tree.insert_below(std::string("hari/"), std::string("Projects/"));
-  path_tree.append_child(std::string("usr/"), std::string("admin/"));
-
-  test_preorder_plain_for_loop(path_tree);
-  test_preorder_stl_for_each(path_tree);
-  test_preorder_range_for_loop(path_tree);
-  test_postorder_range_for_loop(path_tree);
-  test_levelorder_range_for_loop(path_tree);
-  test_levelorder_subtree_traversal(path_tree);
-  test_postorder_subtree_traversal(path_tree);
-  test_preorder_subtree_traversal(path_tree);
-
-  return 0;
-}
