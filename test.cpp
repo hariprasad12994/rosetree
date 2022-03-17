@@ -4,15 +4,7 @@
 #include <sstream>
 #include <string>
 
-
 // https://stackoverflow.com/questions/5973427/error-passing-xxx-as-this-argument-of-xxx-discards-qualifiers
-
-template <typename T, typename IteratorProxy>
-auto tree_to_sstream(PreOrderIterator<Tree<T>> tree, std::stringstream& stream) -> void {
-  for(auto tree_elem: IteratorProxy(tree)) {
-    stream << tree_elem << " ";
-  }
-}
 
 auto main(void) -> int {
   auto path_tree = Tree(new TreeNode<std::string>("/"));

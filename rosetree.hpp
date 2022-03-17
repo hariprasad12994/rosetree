@@ -379,5 +379,12 @@ class tree_as_pre_order{
     pre_order_iterator end() { return end_; }
 };
 
+template <typename T, typename IteratorProxy>
+auto tree_to_sstream(PreOrderIterator<Tree<T>> tree, std::stringstream& stream) -> void {
+  for(auto tree_elem: IteratorProxy(tree)) {
+    stream << tree_elem << " ";
+  }
+}
+
 #endif /*ROSETREE_H*/
 
