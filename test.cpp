@@ -15,6 +15,8 @@ auto test_levelorder_range_for_loop(Tree<std::string>& path_tree) -> void;
 auto test_levelorder_subtree_traversal(Tree<std::string>& path_tree) -> void;
 auto test_postorder_subtree_traversal(Tree<std::string>& path_tree) -> void;
 auto test_preorder_subtree_traversal(Tree<std::string>& path_tree) -> void;
+auto test_subtree_delete(Tree<std::string>& path_tree) -> void;
+
 
 auto main(void) -> int {
   auto path_tree = Tree(new TreeNode<std::string>("/"));
@@ -39,6 +41,7 @@ auto main(void) -> int {
   test_levelorder_subtree_traversal(path_tree);
   test_postorder_subtree_traversal(path_tree);
   test_preorder_subtree_traversal(path_tree);
+  test_subtree_delete(path_tree);
 
   return 0;
 }
@@ -51,6 +54,7 @@ auto test_preorder_plain_for_loop(Tree<std::string>& tree) -> void {
     op << *it << " ";
   }
   assert(op.str() == expected_op);
+  std::cout << "[PASSED] " << __func__ << '\n';
 }
 
 auto test_preorder_stl_for_each(Tree<std::string>& tree) -> void {
@@ -59,6 +63,7 @@ auto test_preorder_stl_for_each(Tree<std::string>& tree) -> void {
 
   std::for_each(tree.begin(), tree.end(), [&op](auto elem) { op << elem << " "; });
   assert(op.str() == expected_op);
+  std::cout << "[PASSED] " << __func__ << '\n';
 }
 
 auto test_preorder_range_for_loop(Tree<std::string>& tree) -> void {
@@ -67,6 +72,7 @@ auto test_preorder_range_for_loop(Tree<std::string>& tree) -> void {
 
   tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(tree.begin(), op);
   assert(op.str() == expected_op);
+  std::cout << "[PASSED] " << __func__ << '\n';
 }
 
 auto test_postorder_range_for_loop(Tree<std::string>& tree) -> void {
@@ -75,6 +81,7 @@ auto test_postorder_range_for_loop(Tree<std::string>& tree) -> void {
 
   tree_to_sstream<std::string, tree_as_post_order<Tree<std::string>>>(tree.begin(), op);
   assert(op.str() == expected_op);
+  std::cout << "[PASSED] " << __func__ << '\n';
 }
 
 auto test_levelorder_range_for_loop(Tree<std::string>& tree) -> void {
@@ -83,6 +90,7 @@ auto test_levelorder_range_for_loop(Tree<std::string>& tree) -> void {
 
   tree_to_sstream<std::string, tree_as_level_order<Tree<std::string>>>(tree.begin(), op);
   assert(op.str() == expected_op);
+  std::cout << "[PASSED] " << __func__ << '\n';
 }
 
 auto test_preorder_subtree_traversal(Tree<std::string>& tree) -> void {
@@ -92,6 +100,7 @@ auto test_preorder_subtree_traversal(Tree<std::string>& tree) -> void {
   auto it = std::find_if(tree.begin(), tree.end(), [](auto elem){ return elem == std::string("usr/"); });
   tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(it, op);
   assert(op.str() == expected_op);
+  std::cout << "[PASSED] " << __func__ << '\n';
 }
 
 auto test_postorder_subtree_traversal(Tree<std::string>& tree) -> void {
@@ -101,6 +110,7 @@ auto test_postorder_subtree_traversal(Tree<std::string>& tree) -> void {
   auto it = std::find_if(tree.begin(), tree.end(), [](auto elem){ return elem == std::string("usr/"); });
   tree_to_sstream<std::string, tree_as_post_order<Tree<std::string>>>(it, op);
   assert(op.str() == expected_op);
+  std::cout << "[PASSED] " << __func__ << '\n';
 }
 
 auto test_levelorder_subtree_traversal(Tree<std::string>& tree) -> void {
@@ -110,5 +120,17 @@ auto test_levelorder_subtree_traversal(Tree<std::string>& tree) -> void {
   auto it = std::find_if(tree.begin(), tree.end(), [](auto elem){ return elem == std::string("usr/"); });
   tree_to_sstream<std::string, tree_as_level_order<Tree<std::string>>>(it, op);
   assert(op.str() == expected_op);
+  std::cout << "[PASSED] " << __func__ << '\n';
+}
+
+auto test_subtree_delete(Tree<std::string>& tree) -> void {
+  std::string expected_op = "/ boot/ bin/ var/ tmp/ etc/ opt/ ";
+  std::stringstream op;
+
+  auto it = std::find_if(tree.begin(), tree.end(), [](auto elem){ return elem == std::string("usr/"); });
+  tree.remove(it);
+  tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(tree.begin(), op);
+  assert(op.str() == expected_op);
+  std::cout << "[PASSED] " << __func__ << '\n';
 }
 
