@@ -32,16 +32,19 @@ class tree_as_post_order;
 template <typename Tree>
 class tree_as_pre_order;
 
-template <typename Tree>
+template <typename T>
+class Tree;
+
+template <typename TreeClass>
 struct PostOrderIterator{
   public:
     using iterator_category = std::forward_iterator_tag;
     using difference_type = std::ptrdiff_t;
-    using value_type = typename Tree::value_type;
+    using value_type = typename TreeClass::value_type;
     using pointer = value_type*;
     using reference = value_type&;
     
-    using node = typename Tree::node;
+    using node = typename TreeClass::node;
     using node_pointer = node*;
     using node_reference = node&;
 
@@ -93,6 +96,7 @@ struct PostOrderIterator{
 
     friend bool operator==(const PostOrderIterator& a, const PostOrderIterator& b) { return a.ptr_ == b.ptr_; }
     friend bool operator!=(const PostOrderIterator& a, const PostOrderIterator& b) { return a.ptr_ != b.ptr_; }
+    friend class Tree<value_type>;
 
   private:
     node_pointer ptr_;
@@ -331,6 +335,23 @@ class Tree {
   }
 
   auto remove(iterator node) -> void {
+    // node->sibling = node->left_sibling->sibling
+    // postorder(node) : delete
+    iterator left_sibling = iterator(nullptr);
+    for(auto it = begin(); it != end(); it++) {
+      if(it->first_sibling == node) {
+        left_sibling = it;
+        break;
+      }
+    }
+
+    left_sibling->first_sibling = node->first_sibling;
+    node->first_sibling = nullptr;
+
+    auto temp = tree_as_post_order(node);
+    for(auto it = temp.begin(); it != temp.end(); it++) {
+      delete(it.ptr_);
+    }
   }
 
   private:
