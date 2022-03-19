@@ -116,6 +116,7 @@ struct PreOrderIterator {
     using node_pointer = node*;
     using node_reference = node&;
 
+    PreOrderIterator(): ptr_(nullptr) {}
     PreOrderIterator(node_pointer ptr): ptr_(ptr) {
       s.push(ptr);
     }
@@ -335,23 +336,29 @@ class Tree {
   }
 
   auto remove(iterator node) -> void {
-    // node->sibling = node->left_sibling->sibling
-    // postorder(node) : delete
-    iterator left_sibling = iterator(nullptr);
-    for(auto it = begin(); it != end(); it++) {
-      if(it->first_sibling == node) {
-        left_sibling = it;
-        break;
+    if(node != begin()) {
+      iterator left_sibling = iterator(nullptr);
+      for(auto it = begin(); it != end(); it++) {
+        if(it->first_sibling == node) {
+          left_sibling = it;
+          break;
+        }
       }
+      left_sibling->first_sibling = node->first_sibling;
+      node->first_sibling = nullptr;
     }
+    else {
 
-    left_sibling->first_sibling = node->first_sibling;
-    node->first_sibling = nullptr;
+    if(node->first_sibling != nullptr) { tree = node->first_sibling; }
+    else { tree = nullptr; }
+    }
 
     auto temp = tree_as_post_order(node);
     for(auto it = temp.begin(); it != temp.end(); it++) {
+      std::cout << *it << " ";
       delete(it.ptr_);
     }
+    std::cout << '\n';
   }
 
   private:
@@ -395,7 +402,12 @@ class tree_as_pre_order{
     pre_order_iterator end_;
 
   public:
-    tree_as_pre_order(const iterator& it): begin_(it.ptr_), end_(it.ptr_->first_sibling) {}
+    tree_as_pre_order(const iterator& it) {
+      begin_ = it.ptr_;
+      if(it.ptr_ == nullptr) { end_ = nullptr; }
+      else { end_ = it.ptr_->first_sibling; }
+    }
+
     pre_order_iterator begin() { return begin_; }
     pre_order_iterator end() { return end_; }
 };
