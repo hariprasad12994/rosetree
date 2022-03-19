@@ -137,8 +137,6 @@ auto test_subtree_delete(Tree<std::string>& tree) -> void {
   tree.remove(it);
   tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(tree.begin(), op);
   assert(op.str() == expected_op);
-  it = std::find_if(tree.begin(), tree.end(), [](auto elem){ return elem == std::string("var/"); });
-  tree.remove(it);
   std::cout << "[PASSED] " << __func__ << '\n';
 }
 

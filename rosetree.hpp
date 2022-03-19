@@ -348,17 +348,14 @@ class Tree {
       node->first_sibling = nullptr;
     }
     else {
-
-    if(node->first_sibling != nullptr) { tree = node->first_sibling; }
-    else { tree = nullptr; }
+      if(node->first_sibling != nullptr) { tree = node->first_sibling; }
+      else { tree = nullptr; }
     }
 
     auto temp = tree_as_post_order(node);
     for(auto it = temp.begin(); it != temp.end(); it++) {
-      std::cout << *it << " ";
       delete(it.ptr_);
     }
-    std::cout << '\n';
   }
 
   private:
