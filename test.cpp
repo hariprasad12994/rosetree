@@ -15,6 +15,7 @@ auto test_levelorder_range_for_loop(Tree<std::string>& path_tree) -> void;
 auto test_levelorder_subtree_traversal(Tree<std::string>& path_tree) -> void;
 auto test_postorder_subtree_traversal(Tree<std::string>& path_tree) -> void;
 auto test_preorder_subtree_traversal(Tree<std::string>& path_tree) -> void;
+auto test_tree_node_delete(Tree<std::string>& path_tree) -> void;
 auto test_subtree_delete(Tree<std::string>& path_tree) -> void;
 auto test_tree_delete(Tree<std::string>& path_tree) -> void;
 
@@ -42,6 +43,7 @@ auto main(void) -> int {
   test_levelorder_subtree_traversal(path_tree);
   test_postorder_subtree_traversal(path_tree);
   test_preorder_subtree_traversal(path_tree);
+  test_tree_node_delete(path_tree);
   test_subtree_delete(path_tree);
   test_tree_delete(path_tree);
 
@@ -129,8 +131,19 @@ auto test_levelorder_subtree_traversal(Tree<std::string>& tree) -> void {
   std::cout << "[PASSED] " << __func__ << '\n';
 }
 
+auto test_tree_node_delete(Tree<std::string>& tree) -> void {
+  std::string expected_op = "/ boot/ bin/ var/ tmp/ usr/ hari/ Projects/ Documents/ admin/ opt/ ";
+  std::stringstream op;
+
+  auto it = std::find_if(tree.begin(), tree.end(), [](auto elem){ return elem == std::string("etc/"); });
+  tree.remove(it);
+  tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(tree.begin(), op);
+  assert(op.str() == expected_op);
+  std::cout << "[PASSED] " << __func__ << '\n';
+}
+
 auto test_subtree_delete(Tree<std::string>& tree) -> void {
-  std::string expected_op = "/ boot/ bin/ var/ tmp/ etc/ opt/ ";
+  std::string expected_op = "/ boot/ bin/ var/ tmp/ opt/ ";
   std::stringstream op;
 
   auto it = std::find_if(tree.begin(), tree.end(), [](auto elem){ return elem == std::string("usr/"); });
