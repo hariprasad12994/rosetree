@@ -1,5 +1,9 @@
 # RoseTree
-A generic tree data structure written in C++
+Rosetree is the C++ implementation for the data structure of the same name. Rosetrees are generic trees with unbounded numbers
+
+Link to references about Rosetree:
+* https://en.wikipedia.org/wiki/Rose_Tree
+* https://cs.stackexchange.com/questions/56081/what-are-the-applications-of-rose-trees
 
 RoseTree aims to be a header only library, compatible with the STL algorithms
 like std::transform, std::find etc.
