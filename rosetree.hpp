@@ -2,6 +2,7 @@
 #define ROSETREE_H
 
 #include <algorithm>
+#include <utility>
 #include <queue>
 #include <stack>
 #include <iostream>
@@ -266,73 +267,74 @@ class Tree {
   // todo: shallow and depp copy friendly iterators
   // todo: traversal caches
   //
-  auto insert_below(iterator node, T data) -> void {
+  auto insert_below(iterator node, T data) -> iterator {
     TreeNode<T>* new_node = new TreeNode<T>(data);
     if(node->first_child == nullptr){
       node->first_child = new_node;
-      return;
+      return iterator(new_node);
     }
     auto tmp = node->first_child;
     node->first_child = new_node;
     new_node->first_sibling = tmp;
+    return iterator(new_node);
   }
 
-  auto insert_below(T key, T data) -> void {
+  auto insert_below(T key, T data) -> std::pair<bool, iterator> {
     iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
     if(it == end()) {
-      std::cout << "Key " << key << " not found" << '\n';
-      // todo throw key error
-      return;
+      return std::make_pair(false, iterator(nullptr));
     }
-    insert_below(it, data);
+    auto ret = insert_below(it, data); 
+    return std::make_pair(true, ret);
   }
 
-  auto insert_after(iterator node, T data) -> void {
+  auto insert_after(iterator node, T data) -> iterator {
     TreeNode<T>* new_node = new TreeNode<T>(data);
     if(node->first_sibling == nullptr) {
       node->first_sibling = new_node;
-      return;
+      return iterator(new_node);
     }
     auto tmp = node->first_sibling;
     node->first_sibling = new_node;
     new_node->first_sibling = tmp;
+    return iterator(new_node);
   }
 
-  auto insert_after(T key, T data) -> void {
+  auto insert_after(T key, T data) -> std::pair<bool, iterator> {
     iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
     if(it == end()) {
-        std::cout << "Key " << key << " not found" << '\n';
-        return;
+      return std::make_pair(false, iterator(nullptr));
     }
-    insert_after(it, data);
+    auto ret = insert_after(it, data); 
+    return std::make_pair(true, ret);
   }
 
-  auto append_child(iterator node, T data) -> void {
+  auto append_child(iterator node, T data) -> iterator {
     if(node->first_child == nullptr) {
       TreeNode<T>* new_node = new TreeNode<T>(data);
       node->first_child = new_node;
-      return;
+      return iterator(new_node);
     }
     auto first_child = node->first_child;
     if(first_child->first_sibling == nullptr) {
       TreeNode<T>* new_node = new TreeNode<T>(data);
       first_child->first_sibling = new_node;
-      return;
+      return iterator(new_node);
     }
     auto walker = first_child;
     while(walker->first_sibling != nullptr) {
       walker = walker->first_sibling;
     }
-    insert_after(walker, data);
+    return insert_after(walker, data);
   }
 
-  auto append_child(T key, T data) -> void {
+  auto append_child(T key, T data) -> std::pair<bool, iterator> {
     iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
     if(it == end()) {
-        std::cout << "Key " << key << " not found" << '\n';
-        return;
+      return std::make_pair(false, iterator(nullptr));
     }
-    append_child(it, data);
+    auto ret = append_child(it, data); 
+    return std::make_pair(true, ret);
   }
 
   auto remove(iterator node) -> void {

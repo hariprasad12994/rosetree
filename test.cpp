@@ -25,15 +25,17 @@ auto main(void) -> int {
   
   path_tree.insert_below(path_tree.begin(), std::string("boot/"));
   path_tree.append_child(path_tree.begin(), std::string("bin/"));
-  path_tree.append_child(path_tree.begin(), std::string("var/"));
-  path_tree.append_child(path_tree.begin(), std::string("usr/"));
+  auto var_it = path_tree.append_child(path_tree.begin(), std::string("var/"));
+  auto usr_it = path_tree.append_child(path_tree.begin(), std::string("usr/"));
   path_tree.insert_below(std::string("var/"), std::string("tmp/"));
   path_tree.append_child(std::string("/"), std::string("opt/"));
-  path_tree.insert_after(std::string("var/"), std::string("etc/"));
-  path_tree.insert_below(std::string("usr/"), std::string("hari/"));
-  path_tree.insert_below(std::string("hari/"), std::string("Documents/"));
-  path_tree.insert_below(std::string("hari/"), std::string("Projects/"));
-  path_tree.append_child(std::string("usr/"), std::string("admin/"));
+  path_tree.insert_after(var_it, std::string("etc/"));
+  auto hari_it = path_tree.insert_below(std::string("usr/"), std::string("hari/"));
+  if(hari_it.first == true) {
+    path_tree.insert_below(hari_it.second, std::string("Documents/"));
+    path_tree.insert_below(hari_it.second, std::string("Projects/"));
+  }
+  path_tree.append_child(usr_it, std::string("admin/"));
 
   test_preorder_plain_for_loop(path_tree);
   test_preorder_stl_for_each(path_tree);
