@@ -8,7 +8,7 @@ Link to references about Rosetree:
 RoseTree aims to be a header only library, compatible with the STL algorithms
 like std::transform, std::find etc.
 
-The data structure is unsorted, unbalanced tree with unique keys. Users are
+The data structure is unsorted, unbalanced tree. Users are
 allowed to insert data from top to bottom and left to right
 
 Currently supported iterators:
