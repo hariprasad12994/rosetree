@@ -11,6 +11,7 @@ struct S{
     S(const S &obj) { std::cout << "[CopyCtor] S(const S& obj)\n"; }
     S(S&& obj) { std::cout << "[MoveCtor] S(S&& obj)\n"; } 
     ~S() { std::cout << "[Dtor] ~S()\n"; }
+    friend bool operator==(const S& lhs, const S& rhs) { return lhs.a == rhs.a; }
 };
 
 auto main(void) -> int {
@@ -20,6 +21,10 @@ auto main(void) -> int {
   another_tree.emplace_below(another_tree.begin(), 3);
   std::cout << "[insert_below] 7\n";
   another_tree.insert_below(another_tree.begin(), 7);
+  std::cout << "[insert_below] 9\n";
+  another_tree.insert_below(7, 7);
+  std::cout << "[emplace_below] 11\n";
+  another_tree.emplace_below(7, 11);
   std::cout << "[delete_tree] tree\n";
   another_tree.remove(another_tree.begin());
   return 0;

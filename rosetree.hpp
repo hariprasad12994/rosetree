@@ -21,7 +21,9 @@ class TreeNode {
 
     TreeNode(): first_child(nullptr), first_sibling(nullptr) {}
     TreeNode(const T& val): value(val), first_child(nullptr), first_sibling(nullptr) {}
-    TreeNode(T&& val): value(val), first_child(nullptr), first_sibling(nullptr) {}
+    TreeNode(T&& val): value(std::move(val)), first_child(nullptr), first_sibling(nullptr) {}
+    template <typename ... Args>
+    TreeNode(Args&&... args): value(T(std::forward<Args>(args)...)), first_child(nullptr), first_sibling(nullptr) {}
 };
 
 template <typename Tree>
@@ -279,12 +281,35 @@ class Tree {
     return iterator(new_node);
   }
 
+  template <typename ... Args>
+  auto emplace_below(iterator node, Args ... args) -> iterator {
+    TreeNode<T>* new_node = new TreeNode<T>(std::forward<Args>(args)...);
+    if(node->first_child == nullptr) {
+      node->first_child = new_node;
+      return iterator(new_node);
+    }
+    auto tmp = node->first_child;
+    node->first_child = new_node;
+    new_node->first_sibling = tmp;
+    return iterator(new_node);
+  }
+
   auto insert_below(T key, T data) -> std::pair<bool, iterator> {
     iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
     if(it == end()) {
       return std::make_pair(false, iterator(nullptr));
     }
     auto ret = insert_below(it, data); 
+    return std::make_pair(true, ret);
+  }
+
+  template <typename ... Args>
+  auto emplace_below(T key, Args ... args) -> std::pair<bool, iterator> {
+    iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
+    if(it == end()) {
+      return std::make_pair(false, iterator(nullptr));
+    }
+    auto ret = emplace_below(it, std::forward<Args>(args)...);
     return std::make_pair(true, ret);
   }
 
