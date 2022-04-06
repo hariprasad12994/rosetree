@@ -51,10 +51,6 @@ auto main(void) -> int {
   test_subtree_delete(path_tree);
   test_tree_delete(path_tree);
 
-  std::stringstream op;
-  tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(path_tree.begin(), op);
-  std::cout << op.str() << '\n';
-
   return 0;
 }
 
