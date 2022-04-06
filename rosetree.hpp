@@ -19,6 +19,8 @@ class TreeNode {
     TreeNode* first_child;
     TreeNode* first_sibling;
 
+    // The copy and move constructors are wrong! They should take the tree node
+    // as args
     TreeNode(): first_child(nullptr), first_sibling(nullptr) {}
     TreeNode(const T& val): value(val), first_child(nullptr), first_sibling(nullptr) {}
     TreeNode(T&& val): value(std::move(val)), first_child(nullptr), first_sibling(nullptr) {}
@@ -245,6 +247,7 @@ class Tree {
 
   Tree() {}
   Tree(TreeNode<T>* head): tree(head) {}
+  ~Tree() {}
 
   auto begin() -> iterator {
     return iterator(tree);
@@ -269,8 +272,20 @@ class Tree {
   // todo: shallow and depp copy friendly iterators
   // todo: traversal caches
   //
-  auto insert_below(iterator node, T data) -> iterator {
+  auto insert_below(iterator node, const T& data) -> iterator {
     TreeNode<T>* new_node = new TreeNode<T>(data);
+    if(node->first_child == nullptr){
+      node->first_child = new_node;
+      return iterator(new_node);
+    }
+    auto tmp = node->first_child;
+    node->first_child = new_node;
+    new_node->first_sibling = tmp;
+    return iterator(new_node);
+  }
+
+  auto insert_below(iterator node, T&& data) -> iterator {
+    TreeNode<T>* new_node = new TreeNode<T>(std::move(data));
     if(node->first_child == nullptr){
       node->first_child = new_node;
       return iterator(new_node);
@@ -294,7 +309,7 @@ class Tree {
     return iterator(new_node);
   }
 
-  auto insert_below(T key, T data) -> std::pair<bool, iterator> {
+  auto insert_below(const T& key, const T& data) -> std::pair<bool, iterator> {
     iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
     if(it == end()) {
       return std::make_pair(false, iterator(nullptr));
@@ -303,8 +318,17 @@ class Tree {
     return std::make_pair(true, ret);
   }
 
+  auto insert_below(const T& key, T&& data) -> std::pair<bool, iterator> {
+    iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
+    if(it == end()) {
+      return std::make_pair(false, iterator(nullptr));
+    }
+    auto ret = insert_below(it, std::move(data)); 
+    return std::make_pair(true, ret);
+  }
+
   template <typename ... Args>
-  auto emplace_below(T key, Args ... args) -> std::pair<bool, iterator> {
+  auto emplace_below(const T& key, Args ... args) -> std::pair<bool, iterator> {
     iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
     if(it == end()) {
       return std::make_pair(false, iterator(nullptr));
