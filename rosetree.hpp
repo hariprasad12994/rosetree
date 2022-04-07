@@ -271,42 +271,34 @@ class Tree {
   // todo: [] operator
   // todo: shallow and depp copy friendly iterators
   // todo: traversal caches
-  //
-  auto insert_below(iterator node, const T& data) -> iterator {
-    TreeNode<T>* new_node = new TreeNode<T>(data);
-    if(node->first_child == nullptr){
+ 
+  auto exchange_nodes(node_pointer& left, node_pointer& middle, node_pointer& right) -> iterator {
+    left = std::exchange(middle, right);
+    return iterator(right);
+  }
+
+  auto insert_below(iterator node, node_pointer new_node) -> iterator {
+    if(node->first_child == nullptr) {
       node->first_child = new_node;
       return iterator(new_node);
     }
-    auto tmp = node->first_child;
-    node->first_child = new_node;
-    new_node->first_sibling = tmp;
-    return iterator(new_node);
+    return exchange_nodes(new_node->first_sibling, node->first_child, new_node);
+  }
+  
+  auto insert_below(iterator node, const T& data) -> iterator {
+    TreeNode<T>* new_node = new TreeNode<T>(data);
+    return insert_below(node, new_node);
   }
 
   auto insert_below(iterator node, T&& data) -> iterator {
     TreeNode<T>* new_node = new TreeNode<T>(std::move(data));
-    if(node->first_child == nullptr){
-      node->first_child = new_node;
-      return iterator(new_node);
-    }
-    auto tmp = node->first_child;
-    node->first_child = new_node;
-    new_node->first_sibling = tmp;
-    return iterator(new_node);
+    return insert_below(node, new_node); 
   }
 
   template <typename ... Args>
   auto emplace_below(iterator node, Args ... args) -> iterator {
     TreeNode<T>* new_node = new TreeNode<T>(std::forward<Args>(args)...);
-    if(node->first_child == nullptr) {
-      node->first_child = new_node;
-      return iterator(new_node);
-    }
-    auto tmp = node->first_child;
-    node->first_child = new_node;
-    new_node->first_sibling = tmp;
-    return iterator(new_node);
+    return insert_below(node, new_node);
   }
 
   auto insert_below(const T& key, const T& data) -> std::pair<bool, iterator> {
