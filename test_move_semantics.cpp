@@ -67,6 +67,6 @@ auto main(void) -> int {
   std::cout << '\n';
 
   std::cout << "[delete_tree] tree\n";
-  another_tree.remove(another_tree.begin());
+  another_tree.erase(another_tree.begin());
   return 0;
 }

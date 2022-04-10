@@ -134,7 +134,7 @@ auto test_tree_node_delete(Tree<std::string>& tree) -> void {
   std::stringstream op;
 
   auto it = std::find_if(tree.begin(), tree.end(), [](auto elem){ return elem == std::string("etc/"); });
-  tree.remove(it);
+  tree.erase(it);
   tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(tree.begin(), op);
   assert(op.str() == expected_op);
   std::cout << "[PASSED] " << __func__ << '\n';
@@ -145,7 +145,7 @@ auto test_subtree_delete(Tree<std::string>& tree) -> void {
   std::stringstream op;
 
   auto it = std::find_if(tree.begin(), tree.end(), [](auto elem){ return elem == std::string("usr/"); });
-  tree.remove(it);
+  tree.erase(it);
   tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(tree.begin(), op);
   assert(op.str() == expected_op);
   std::cout << "[PASSED] " << __func__ << '\n';
@@ -155,7 +155,7 @@ auto test_tree_delete(Tree<std::string>& tree) -> void {
   std::string expected_op = "";
   std::stringstream op;
 
-  tree.remove(tree.begin());
+  tree.clear();
   tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(tree.begin(), op);
   assert(op.str() == expected_op);
   std::cout << "[PASSED] " << __func__ << '\n';

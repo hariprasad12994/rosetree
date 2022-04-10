@@ -359,7 +359,7 @@ class Tree {
     return append_child(node, new_node);
   }
 
-  auto remove(iterator node) -> void {
+  auto erase(iterator node) -> void {
     if(node != begin()) {
       iterator left_sibling = iterator(nullptr);
       for(auto it = begin(); it != end(); it++) {
@@ -380,6 +380,10 @@ class Tree {
     for(auto it = temp.begin(); it != temp.end(); it++) {
       delete(it.ptr_);
     }
+  }
+
+  auto clear() -> void {
+    erase(begin());
   }
 
   private:
