@@ -277,7 +277,7 @@ class Tree {
     return iterator(right);
   }
 
-  auto insert_below(iterator node, node_pointer new_node) -> iterator {
+  auto insert_below(iterator node, node_pointer& new_node) -> iterator {
     if(node->first_child == nullptr) {
       node->first_child = new_node;
       return iterator(new_node);
@@ -329,19 +329,31 @@ class Tree {
     return std::make_pair(true, ret);
   }
 
-  auto insert_after(iterator node, T data) -> iterator {
-    TreeNode<T>* new_node = new TreeNode<T>(data);
+  auto insert_after(iterator node, node_pointer& new_node) -> iterator {
     if(node->first_sibling == nullptr) {
       node->first_sibling = new_node;
       return iterator(new_node);
     }
-    auto tmp = node->first_sibling;
-    node->first_sibling = new_node;
-    new_node->first_sibling = tmp;
-    return iterator(new_node);
+    return exchange_nodes(new_node->first_sibling, node->first_sibling, new_node);
   }
 
-  auto insert_after(T key, T data) -> std::pair<bool, iterator> {
+  auto insert_after(iterator node, const T& data) -> iterator {
+    TreeNode<T>* new_node = new TreeNode<T>(data);
+    return insert_after(node, new_node);
+  }
+
+  auto insert_after(iterator node, T&& data) -> iterator {
+    TreeNode<T>* new_node = new TreeNode<T>(std::move(data));
+    return insert_after(node, new_node);
+  }
+
+  template <typename ... Args>
+  auto emplace_after(iterator node, Args ... args) -> iterator {
+    TreeNode<T*> new_node = new TreeNode<T>(std::forward<Args>(args)...);
+    return insert_after(node, new_node);
+  }
+
+  auto insert_after(const T key, const T& data) -> std::pair<bool, iterator> {
     iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
     if(it == end()) {
       return std::make_pair(false, iterator(nullptr));
