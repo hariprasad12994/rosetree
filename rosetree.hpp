@@ -362,23 +362,37 @@ class Tree {
     return std::make_pair(true, ret);
   }
 
-  auto append_child(iterator node, T data) -> iterator {
+  auto append_child(iterator node, node_pointer& new_node) -> iterator {
     if(node->first_child == nullptr) {
-      TreeNode<T>* new_node = new TreeNode<T>(data);
       node->first_child = new_node;
       return iterator(new_node);
     }
-    auto first_child = node->first_child;
-    if(first_child->first_sibling == nullptr) {
-      TreeNode<T>* new_node = new TreeNode<T>(data);
-      first_child->first_sibling = new_node;
+
+    auto walker = node->first_child;
+    if(walker->first_sibling == nullptr) {
+      walker->first_sibling = new_node;
       return iterator(new_node);
     }
-    auto walker = first_child;
     while(walker->first_sibling != nullptr) {
       walker = walker->first_sibling;
     }
-    return insert_after(walker, data);
+    return insert_after(walker, new_node);
+  }
+
+  auto append_child(iterator node, const T& data) -> iterator {
+    TreeNode<T>* new_node = new TreeNode<T>(data);
+    return append_child(node, new_node);
+  }
+
+  auto append_child(iterator node, T&& data) -> iterator {
+    TreeNode<T>* new_node = new TreeNode<T>(std::move(data));
+    return append_child(node, new_node);
+  }
+  
+  template <typename ... Args>
+  auto append_child_by_emplace(iterator node, Args ... args) -> iterator {
+    TreeNode<T>* new_node = new TreeNode<T>(std::forward<Args>(args)...);
+    return append_child(node, new_node);
   }
 
   auto append_child(T key, T data) -> std::pair<bool, iterator> {
