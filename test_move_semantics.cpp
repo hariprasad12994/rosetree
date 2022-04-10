@@ -28,20 +28,20 @@ auto main(void) -> int {
 
   std::cout << "[insert_below -> 1] 7, seven\n";
   MyStruct s_7 = MyStruct(7, "seven");
-  another_tree.insert_below(another_tree.begin(), s_7);
+  auto s_7_it = another_tree.insert_below(another_tree.begin(), s_7);
   std::cout << '\n';
 
   std::cout << "[insert_below -> 7] 9, nine\n";
   MyStruct s_9 = MyStruct(9, "nine");
-  another_tree.insert_below(s_7, s_9);
+  another_tree.insert_below(s_7_it, s_9);
   std::cout << '\n';
 
   std::cout << "[emplace_below -> 7] 11\n";
-  another_tree.emplace_below(7, 11);
+  another_tree.emplace_below(s_7_it, 11);
   std::cout << '\n';
 
   std::cout << "[emplace_below -> 7] 66\n";
-  another_tree.insert_below(s_7, std::string("hello"));
+  another_tree.insert_below(s_7_it, std::string("hello"));
   std::cout << '\n';
 
   for(auto elem: tree_as_pre_order(another_tree.begin())) std::cout << elem.i << ", " << elem.s << "| ";

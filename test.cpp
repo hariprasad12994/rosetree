@@ -23,21 +23,19 @@ auto test_tree_delete(Tree<std::string>& path_tree) -> void;
 auto main(void) -> int {
   auto path_tree = Tree(new TreeNode<std::string>("/"));
   
-  path_tree.insert_below(path_tree.begin(), std::string("boot/"));
-  path_tree.append_child(path_tree.begin(), std::string("bin/"));
-  auto var_it = path_tree.append_child(path_tree.begin(), std::string("var/"));
-  auto usr_it = path_tree.append_child(path_tree.begin(), std::string("usr/"));
-  path_tree.insert_below(std::string("var/"), std::string("tmp/"));
-  path_tree.append_child(std::string("/"), std::string("opt/"));
-  path_tree.insert_after(var_it, std::string("etc/"));
-  auto hari_it = path_tree.insert_below(std::string("usr/"), std::string("hari/"));
-  if(hari_it.first == true) {
-    path_tree.insert_below(hari_it.second, std::string("Documents/"));
-    path_tree.insert_below(hari_it.second, std::string("Projects/"));
-  }
-  path_tree.append_child(usr_it, std::string("admin/"));
+  auto boot = path_tree.insert_below(path_tree.begin(), std::string("boot/"));
+  auto bin = path_tree.append_child(path_tree.begin(), std::string("bin/"));
+  auto var = path_tree.append_child(path_tree.begin(), std::string("var/"));
+  auto usr = path_tree.append_child(path_tree.begin(), std::string("usr/"));
+  auto tmp = path_tree.insert_below(var, std::string("tmp/"));
+  path_tree.append_child(path_tree.begin(), std::string("opt/"));
+  path_tree.insert_after(var, std::string("etc/"));
+  auto hari = path_tree.insert_below(usr, std::string("hari/"));
+  path_tree.insert_below(hari, std::string("Documents/"));
+  path_tree.insert_below(hari, std::string("Projects/"));
+  path_tree.append_child(usr, std::string("admin/"));
   auto arch = path_tree.emplace_below(path_tree.begin(), "arch");
-  path_tree.emplace_below("arch", "arm64");
+  path_tree.emplace_below(arch, "arm64");
 
   test_preorder_plain_for_loop(path_tree);
   test_preorder_stl_for_each(path_tree);
