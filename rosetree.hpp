@@ -271,6 +271,7 @@ class Tree {
   // todo: [] operator
   // todo: shallow and depp copy friendly iterators
   // todo: traversal caches
+  // todo: insert/emplace by key/path as a separate algorithm
  
   auto exchange_nodes(node_pointer& left, node_pointer& middle, node_pointer& right) -> iterator {
     left = std::exchange(middle, right);
@@ -301,34 +302,6 @@ class Tree {
     return insert_below(node, new_node);
   }
 
-  auto insert_below(const T& key, const T& data) -> std::pair<bool, iterator> {
-    iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
-    if(it == end()) {
-      return std::make_pair(false, iterator(nullptr));
-    }
-    auto ret = insert_below(it, data); 
-    return std::make_pair(true, ret);
-  }
-
-  auto insert_below(const T& key, T&& data) -> std::pair<bool, iterator> {
-    iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
-    if(it == end()) {
-      return std::make_pair(false, iterator(nullptr));
-    }
-    auto ret = insert_below(it, std::move(data)); 
-    return std::make_pair(true, ret);
-  }
-
-  template <typename ... Args>
-  auto emplace_below(const T& key, Args ... args) -> std::pair<bool, iterator> {
-    iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
-    if(it == end()) {
-      return std::make_pair(false, iterator(nullptr));
-    }
-    auto ret = emplace_below(it, std::forward<Args>(args)...);
-    return std::make_pair(true, ret);
-  }
-
   auto insert_after(iterator node, node_pointer& new_node) -> iterator {
     if(node->first_sibling == nullptr) {
       node->first_sibling = new_node;
@@ -351,15 +324,6 @@ class Tree {
   auto emplace_after(iterator node, Args ... args) -> iterator {
     TreeNode<T*> new_node = new TreeNode<T>(std::forward<Args>(args)...);
     return insert_after(node, new_node);
-  }
-
-  auto insert_after(const T key, const T& data) -> std::pair<bool, iterator> {
-    iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
-    if(it == end()) {
-      return std::make_pair(false, iterator(nullptr));
-    }
-    auto ret = insert_after(it, data); 
-    return std::make_pair(true, ret);
   }
 
   auto append_child(iterator node, node_pointer& new_node) -> iterator {
@@ -393,15 +357,6 @@ class Tree {
   auto append_child_by_emplace(iterator node, Args ... args) -> iterator {
     TreeNode<T>* new_node = new TreeNode<T>(std::forward<Args>(args)...);
     return append_child(node, new_node);
-  }
-
-  auto append_child(T key, T data) -> std::pair<bool, iterator> {
-    iterator it = std::find_if(begin(), end(), [&key](auto key_) { return key == key_; });
-    if(it == end()) {
-      return std::make_pair(false, iterator(nullptr));
-    }
-    auto ret = append_child(it, data); 
-    return std::make_pair(true, ret);
   }
 
   auto remove(iterator node) -> void {
