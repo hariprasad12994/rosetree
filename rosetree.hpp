@@ -247,7 +247,7 @@ class Tree {
 
   Tree() {}
   Tree(TreeNode<T>* head): tree(head) {}
-  ~Tree() {}
+  ~Tree() { clear(); }
 
   auto begin() -> iterator {
     return iterator(tree);
@@ -360,6 +360,8 @@ class Tree {
   }
 
   auto erase(iterator node) -> void {
+    if(node == end()) { return; }
+
     if(node != begin()) {
       iterator left_sibling = iterator(nullptr);
       for(auto it = begin(); it != end(); it++) {
