@@ -374,7 +374,7 @@ class Tree {
     }
     else {
       if(node->first_sibling != nullptr) { tree = node->first_sibling; }
-      else { std::cout << "Reached\n"; tree = nullptr; }
+      else { tree = nullptr; }
     }
     return Tree(node.ptr_);
   }
