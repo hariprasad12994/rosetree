@@ -108,16 +108,16 @@ struct PostOrderIterator{
     std::stack<node_pointer> s;
 };
 
-template <typename Tree>
+template <typename TreeClass>
 struct PreOrderIterator {
   public:
     using iterator_category = std::forward_iterator_tag;
     using difference_type = std::ptrdiff_t;
-    using value_type = typename Tree::value_type;
+    using value_type = typename TreeClass::value_type;
     using pointer = value_type*;
     using reference = value_type&;
 
-    using node = typename Tree::node;
+    using node = typename TreeClass::node;
     using node_pointer = node*;
     using node_reference = node&;
 
@@ -171,9 +171,10 @@ struct PreOrderIterator {
 
     friend bool operator==(const PreOrderIterator& a, const PreOrderIterator& b) { return a.ptr_ == b.ptr_; }
     friend bool operator!=(const PreOrderIterator& a, const PreOrderIterator& b) { return a.ptr_ != b.ptr_; }
-    friend class tree_as_level_order<Tree>;
-    friend class tree_as_post_order<Tree>;
-    friend class tree_as_pre_order<Tree>;
+    friend class tree_as_level_order<TreeClass>;
+    friend class tree_as_post_order<TreeClass>;
+    friend class tree_as_pre_order<TreeClass>;
+    friend class Tree<value_type>;
 
   private:
     node_pointer ptr_;
@@ -359,9 +360,7 @@ class Tree {
     return append_child(node, new_node);
   }
 
-  auto erase(iterator node) -> void {
-    if(node == end()) { return; }
-
+  auto cut(iterator node) -> Tree {
     if(node != begin()) {
       iterator left_sibling = iterator(nullptr);
       for(auto it = begin(); it != end(); it++) {
@@ -375,17 +374,26 @@ class Tree {
     }
     else {
       if(node->first_sibling != nullptr) { tree = node->first_sibling; }
-      else { tree = nullptr; }
+      else { std::cout << "Reached\n"; tree = nullptr; }
     }
+    return Tree(node.ptr_);
+  }
 
+  auto erase_intern(iterator node) -> void {
     auto temp = tree_as_post_order(node);
     for(auto it = temp.begin(); it != temp.end(); it++) {
       delete(it.ptr_);
     }
   }
 
+  auto erase(iterator node) -> void {
+    if(node == end()) { return; }
+    auto tree_to_be_erased = cut(node);
+  }
+
   auto clear() -> void {
-    erase(begin());
+    erase_intern(begin());
+    tree = nullptr;
   }
 
   private:

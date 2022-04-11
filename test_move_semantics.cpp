@@ -66,5 +66,8 @@ auto main(void) -> int {
   for(auto elem: another_tree) std::cout << elem.i << ", " << elem.s << "| ";
   std::cout << '\n';
 
+  auto spliced_tree = another_tree.cut(s_7_it);
+  for(auto elem: spliced_tree) std::cout << elem.i << ", " << elem.s << "| ";
+  
   return 0;
 }
