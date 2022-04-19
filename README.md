@@ -11,8 +11,8 @@ like std::transform, std::find etc.
 The data structure is unsorted, unbalanced tree. Users are
 allowed to insert data from top to bottom and left to right
 
-# Basic API documentation
-## Tree construction
+## Basic API documentation
+### Tree construction
 
 ```c++
 auto path_tree = Tree(new TreeNode<std::string>("/"));
@@ -23,11 +23,11 @@ auto var = path_tree.append_child(path_tree.begin(), std::string("var/"));
 auto usr = path_tree.append_child(path_tree.begin(), std::string("usr/"));
 ```
 
-## Tree insertion operations
+### Tree insertion operations
 
-## Tree deletion operations
+### Tree deletion operations
 
-## Tree iteration
+### Tree iteration
 Currently supported iterators:
 * Breadth-First Iterator
 * PreOrder Depth-First Iterator
@@ -36,7 +36,7 @@ Currently supported iterators:
 The default iterator on constructing a tree will be PreOrder iterator. Proxy
 classes are available to convert the default iterator to other types
 
-# Roadmap
+## Roadmap
 - [x] Iterators - PreOrder, PostOrder, LevelOrder
 - [x] Insertion APIs - Value Semantics
 - [x] Insertion APIs - Move Semantics
