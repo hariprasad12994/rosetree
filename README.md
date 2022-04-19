@@ -37,18 +37,18 @@ The default iterator on constructing a tree will be PreOrder iterator. Proxy
 classes are available to convert the default iterator to other types
 
 # Roadmap
-[x] Iterators - PreOrder, PostOrder, LevelOrder
-[x] Insertion APIs - Value Semantics
-[x] Insertion APIs - Move Semantics
-[x] Insertion APIs - Emplacing / In place construction of nodes
-[x] Deletion - Erase node
-[x] Deletion - Subtree eviction by cutting
-[x] Deletion - Clear container
-[ ] Iterators - InOrder, LeafOrder
-[x] Automatic memory cleanup on destruction
-[ ] Tree copy - Deep
-[ ] Tree move
-[ ] Tree head manipulation
-[ ] Iterators - const versions
+- [x] Iterators - PreOrder, PostOrder, LevelOrder
+- [x] Insertion APIs - Value Semantics
+- [x] Insertion APIs - Move Semantics
+- [x] Insertion APIs - Emplacing / In place construction of nodes
+- [x] Deletion - Erase node
+- [x] Deletion - Subtree eviction by cutting
+- [x] Deletion - Clear container
+- [ ] Iterators - InOrder, LeafOrder
+- [x] Automatic memory cleanup on destruction
+- [ ] Tree copy - Deep
+- [ ] Tree move
+- [ ] Tree head manipulation
+- [ ] Iterators - const versions
 
 
