@@ -37,6 +37,10 @@ The default iterator on constructing a tree will be PreOrder iterator. Proxy
 classes are available to convert the default iterator to other types
 
 ## Roadmap
+Tentative feature road map for the Rosetree Data Structure. Please do note that
+there might few features which might not be implemented and few might not be
+on the list but would be implemented on the fly. List entry with "?" is some
+feature which is not concretely planned
 - [x] Iterators - PreOrder, PostOrder, LevelOrder
 - [x] Insertion APIs - Value Semantics
 - [x] Insertion APIs - Move Semantics
@@ -50,5 +54,6 @@ classes are available to convert the default iterator to other types
 - [ ] Tree move
 - [ ] Tree head manipulation
 - [ ] Iterators - const versions
+- [ ] Allocator concept for tree nodes
 
 
