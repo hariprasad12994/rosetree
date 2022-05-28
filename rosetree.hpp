@@ -246,8 +246,11 @@ class Tree {
   // todo? class Allocator<T> as template paramter
   // todo: add special memeber functions
 
-  Tree() {}
-  Tree(TreeNode<T>* head): tree(head) {}
+  Tree(): tree(nullptr) {}
+  Tree(TreeNode<T>* head): tree(head) { std::cout << "Tree(TreeNode<T>* head)\n"; }
+  Tree(Tree&& other) { std::cout << "Tree(Tree&& other)\n"; std::swap(tree, other.tree); other.tree = nullptr; }
+  Tree& operator=(const Tree& other) { std::cout << "Tree& operator=(const Tree& other)\n"; *this; }
+  Tree& operator=(Tree&& other) { std::cout << "Tree& operator=(Tree&& other)\n"; std::swap(tree, other.tree); other.tree = nullptr; return *this; }
   ~Tree() { clear(); }
 
   auto begin() -> iterator {

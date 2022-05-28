@@ -1,4 +1,4 @@
-#include "rosetree.hpp"
+#include "../rosetree.hpp"
 #include <iostream>
 
 struct MyStruct{

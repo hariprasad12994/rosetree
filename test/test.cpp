@@ -1,5 +1,5 @@
 // test file 
-#include "rosetree.hpp"
+#include "../rosetree.hpp"
 #include <iostream>
 #include <sstream>
 #include <string>
