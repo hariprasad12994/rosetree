@@ -28,6 +28,10 @@ Note that only a PreOrder Depth-First iterator can be used for referencing the
 positions in the insertion APIs. Refer chapter "Tree iteration" for more details
 about iterators
 
+Note that inserting into an empty tree, for example after clearing the container,
+is an undefined behavior. The rationale is that the operation is done on a tree
+without a root and such an operation makes no sense.
+
 All insertion operations returns an iterator to the newly inserted node which
 can be discarded if not required.
 ```c++
@@ -39,6 +43,7 @@ auto usr = path_tree.append_child(path_tree.begin(), std::string("usr/"));
 // It is also ok to discard the returned iterator
 path_tree.insert_below(usr, std::string("hari/"));
 ```
+todo: Document individual APIs, with move semantics
 
 ### Tree deletion operations
 
