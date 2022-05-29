@@ -78,6 +78,8 @@ feature which is not concretely planned
 - [ ] Tree head manipulation
 - [ ] Iterators - const versions
 - [ ] Allocator concept for tree nodes?
+- [ ] Container adapter? - Hint. For example std::priority_queue lets users to
+  decide what can be the underlying container type
 - [ ] Algorithms
   - [ ] Tree Merge
   - [ ] Tree Diff
