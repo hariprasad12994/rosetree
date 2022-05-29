@@ -19,6 +19,15 @@ auto path_tree = Tree(new TreeNode<std::string>("/"));
 ```
 
 ### Tree insertion operations
+Users can insert a new node in any of the three positions relative to the iterator passed as an argument.
+* Below the iterator, ie as first child of the node pointed by the iterator
+* Below the iterator, but as the last child of the node pointed by the iterator
+* After the node pointed by the iteator
+
+Note that only a PreOrder Depth-First iterator can be used for referencing the
+positions in the insertion APIs. Refer chapter "Tree iteration" for more details
+about iterators
+
 ```c++
 // Stores the returned iterator for further operations
 auto boot = path_tree.insert_below(path_tree.begin(), std::string("boot/"));
