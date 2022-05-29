@@ -16,14 +16,18 @@ allowed to insert data from top to bottom and left to right
 
 ```c++
 auto path_tree = Tree(new TreeNode<std::string>("/"));
+```
 
+### Tree insertion operations
+```c++
+// Stores the returned iterator for further operations
 auto boot = path_tree.insert_below(path_tree.begin(), std::string("boot/"));
 auto bin = path_tree.append_child(path_tree.begin(), std::string("bin/"));
 auto var = path_tree.append_child(path_tree.begin(), std::string("var/"));
 auto usr = path_tree.append_child(path_tree.begin(), std::string("usr/"));
+// It is also ok to discard the returned iterator
+path_tree.insert_below(usr, std::string("hari/"));
 ```
-
-### Tree insertion operations
 
 ### Tree deletion operations
 
