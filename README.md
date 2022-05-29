@@ -44,8 +44,11 @@ auto usr = path_tree.append_child(path_tree.begin(), std::string("usr/"));
 path_tree.insert_below(usr, std::string("hari/"));
 ```
 todo: Document individual APIs, with move semantics
+todo: Document known bugs
 
 ### Tree deletion operations
+todo: Document individual APIs
+todo: Document on RAII clear
 
 ### Tree iteration
 Currently supported iterators:
