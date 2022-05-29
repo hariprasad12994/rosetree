@@ -28,6 +28,8 @@ Note that only a PreOrder Depth-First iterator can be used for referencing the
 positions in the insertion APIs. Refer chapter "Tree iteration" for more details
 about iterators
 
+All insertion operations returns an iterator to the newly inserted node which
+can be discarded if not required.
 ```c++
 // Stores the returned iterator for further operations
 auto boot = path_tree.insert_below(path_tree.begin(), std::string("boot/"));
