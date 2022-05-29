@@ -69,6 +69,10 @@ feature which is not concretely planned
 - [ ] Tree move
 - [ ] Tree head manipulation
 - [ ] Iterators - const versions
-- [ ] Allocator concept for tree nodes
-
+- [ ] Allocator concept for tree nodes?
+- [ ] Algorithms
+  - [ ] Tree Merge
+  - [ ] Tree Diff
+  - [ ] Tree Rotate
+  - [ ] Mirror
 
