@@ -1,5 +1,5 @@
 # RoseTree
-Rosetree is the C++ implementation for the data structure of the same name. Rosetrees are generic trees with unbounded numbers of branches at each node
+Rosetree is the C++ implementation for the data structure of the same name. Rosetrees are generic trees with unbounded number of branches at each node
 
 Link to references about Rosetree:
 * https://en.wikipedia.org/wiki/Rose_Tree
@@ -20,8 +20,8 @@ auto path_tree = Tree(new TreeNode<std::string>("/"));
 
 ### Tree insertion operations
 Users can insert a new node in any of the three positions relative to the iterator passed as an argument.
-* Below the iterator, ie as first child of the node pointed by the iterator
-* Below the iterator, but as the last child of the node pointed by the iterator
+* Below the iterator, as first child of the node pointed by the iterator
+* Below the iterator, as the last child of the node pointed by the iterator
 * After the node pointed by the iteator
 
 Note that only a PreOrder Depth-First iterator can be used for referencing the
