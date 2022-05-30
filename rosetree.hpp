@@ -8,19 +8,6 @@
 #include <iostream>
 
 
-template <typename T>
-class TreeNode {
-  public:
-    T value;
-    TreeNode* first_child;
-    TreeNode* first_sibling;
-
-    TreeNode(): first_child(nullptr), first_sibling(nullptr) {}
-    TreeNode(const T& val): value(val), first_child(nullptr), first_sibling(nullptr) {}
-    TreeNode(T&& val): value(std::move(val)), first_child(nullptr), first_sibling(nullptr) {}
-    template <typename ... Args>
-    TreeNode(Args&&... args): value(T(std::forward<Args>(args)...)), first_child(nullptr), first_sibling(nullptr) {}
-};
 
 template <typename Tree>
 class tree_as_level_order;
@@ -229,17 +216,30 @@ struct LevelOrderIterator {
 
 template <typename T>
 class Tree {
+  private:
+  class Node {
+    public:
+      T value;
+      Node* first_child;
+      Node* first_sibling;
+
+      Node(): first_child(nullptr), first_sibling(nullptr) {}
+      Node(const T& val): value(val), first_child(nullptr), first_sibling(nullptr) {}
+      Node(T&& val): value(std::move(val)), first_child(nullptr), first_sibling(nullptr) {}
+      template <typename ... Args>
+      Node(Args&&... args): value(T(std::forward<Args>(args)...)), first_child(nullptr), first_sibling(nullptr) {}
+  };
+
   public:
   using value_type = T;
-  using node = TreeNode<T>;
-  using node_pointer = TreeNode<T>*;
+  using TreeNode = typename Tree<T>::Node;
+  using node = typename Tree<T>::Node;
+  using node_pointer = typename Tree<T>::Node*;
   using iterator = PreOrderIterator<Tree<T>>;
 
   Tree() = delete;
-  Tree(TreeNode<T>* head): tree(head) { std::cout << "Tree(TreeNode<T>* head)\n"; }
-    //TreeNode<T*> new_node = new TreeNode<T>(std::forward<Args>(args)...);
   template <typename ... Args>
-  Tree(Args ... args): tree(new TreeNode<T>(std::forward<Args>(args)...)) { std::cout << "Tree(Args ... args)\n"; }
+  Tree(Args ... args): tree(new typename Tree<T>::TreeNode(std::forward<Args>(args)...)) { std::cout << "Tree(Args ... args)\n"; }
   Tree(Tree&& other) { std::cout << "Tree(Tree&& other)\n"; std::swap(tree, other.tree); other.tree = nullptr; }
   Tree& operator=(const Tree& other) { std::cout << "Tree& operator=(const Tree& other)\n"; *this; }
   Tree& operator=(Tree&& other) { std::cout << "Tree& operator=(Tree&& other)\n"; std::swap(tree, other.tree); other.tree = nullptr; return *this; }
@@ -267,18 +267,18 @@ class Tree {
   }
   
   auto insert_below(iterator node, const T& data) -> iterator {
-    TreeNode<T>* new_node = new TreeNode<T>(data);
+    typename Tree<T>::TreeNode* new_node = new typename Tree<T>::TreeNode(data);
     return insert_below(node, new_node);
   }
 
   auto insert_below(iterator node, T&& data) -> iterator {
-    TreeNode<T>* new_node = new TreeNode<T>(std::move(data));
+    typename Tree<T>::TreeNode* new_node = new typename Tree<T>::TreeNode(std::move(data));
     return insert_below(node, new_node); 
   }
 
   template <typename ... Args>
   auto emplace_below(iterator node, Args ... args) -> iterator {
-    TreeNode<T>* new_node = new TreeNode<T>(std::forward<Args>(args)...);
+    typename Tree<T>::TreeNode* new_node = new typename Tree<T>::TreeNode(std::forward<Args>(args)...);
     return insert_below(node, new_node);
   }
 
@@ -291,18 +291,18 @@ class Tree {
   }
 
   auto insert_after(iterator node, const T& data) -> iterator {
-    TreeNode<T>* new_node = new TreeNode<T>(data);
+    typename Tree<T>::TreeNode* new_node = new typename Tree<T>::TreeNode(data);
     return insert_after(node, new_node);
   }
 
   auto insert_after(iterator node, T&& data) -> iterator {
-    TreeNode<T>* new_node = new TreeNode<T>(std::move(data));
+    typename Tree<T>::TreeNode* new_node = new typename Tree<T>::TreeNode(std::move(data));
     return insert_after(node, new_node);
   }
 
   template <typename ... Args>
   auto emplace_after(iterator node, Args ... args) -> iterator {
-    TreeNode<T*> new_node = new TreeNode<T>(std::forward<Args>(args)...);
+    typename Tree<T>::TreeNode* new_node = new typename Tree<T>::TreeNode(std::forward<Args>(args)...);
     return insert_after(node, new_node);
   }
 
@@ -324,22 +324,22 @@ class Tree {
   }
 
   auto append_child(iterator node, const T& data) -> iterator {
-    TreeNode<T>* new_node = new TreeNode<T>(data);
+    typename Tree<T>::TreeNode* new_node = new typename Tree<T>::TreeNode(data);
     return append_child(node, new_node);
   }
 
   auto append_child(iterator node, T&& data) -> iterator {
-    TreeNode<T>* new_node = new TreeNode<T>(std::move(data));
+    typename Tree<T>::TreeNode* new_node = new typename Tree<T>::TreeNode(std::move(data));
     return append_child(node, new_node);
   }
   
   template <typename ... Args>
   auto append_child_by_emplace(iterator node, Args ... args) -> iterator {
-    TreeNode<T>* new_node = new TreeNode<T>(std::forward<Args>(args)...);
+    typename Tree<T>::TreeNode* new_node = new typename Tree<T>::TreeNode(std::forward<Args>(args)...);
     return append_child(node, new_node);
   }
 
-  auto cut(iterator node) -> Tree {
+  auto cut(iterator node) -> Tree<T> {
     if(node != begin()) {
       iterator left_sibling = iterator(nullptr);
       for(auto it = begin(); it != end(); it++) {
@@ -376,7 +376,9 @@ class Tree {
   }
 
   private:
-  TreeNode<T>* tree;
+  typename Tree<T>::TreeNode* tree;
+  Tree(typename Tree<T>::TreeNode* head): tree(head) { std::cout << "Tree(typename Tree<T>::TreeNode* head)\n"; }
+ 
 };
 
 template <typename Tree>
