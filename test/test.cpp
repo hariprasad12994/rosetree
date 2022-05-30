@@ -21,7 +21,7 @@ auto test_tree_delete(Tree<std::string>& path_tree) -> void;
 
 
 auto main(void) -> int {
-  auto path_tree = Tree(new TreeNode<std::string>("/"));
+  Tree<std::string> path_tree(std::string("/"));
   
   auto boot = path_tree.insert_below(path_tree.begin(), std::string("boot/"));
   auto bin = path_tree.append_child(path_tree.begin(), std::string("bin/"));
