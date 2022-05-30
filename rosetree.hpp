@@ -261,22 +261,6 @@ class Tree {
     return iterator(nullptr);
   }
   
-  // refer - // https://stackoverflow.com/questions/26198350/c-stacks-push-vs-emplace/26198609
-  // refer - // https://stackoverflow.com/questions/17172080/insert-vs-emplace-vs-operator-in-c-map
-  //https://codereview.stackexchange.com/questions/214882/binary-search-tree-implementation-with-unique-pointers
-  // todo: switch to unique_ptr for leak protection
-  // todo: dfs iterators - pre, post and inorder traversal, sibling iterator
-  // todo: insert at, insert after, insert below
-  // todo: emplace at, emplace after, emplace below, try emplace
-  // todo: append_child, prepend_child
-  // todo: clear, erase, delete at
-  // todo: merge
-  // todo: paths, relationship APIs
-  // todo: [] operator
-  // todo: shallow and depp copy friendly iterators
-  // todo: traversal caches
-  // todo: insert/emplace by key/path as a separate algorithm
- 
   auto exchange_nodes(node_pointer& left, node_pointer& middle, node_pointer& right) -> iterator {
     left = std::exchange(middle, right);
     return iterator(right);
