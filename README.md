@@ -16,7 +16,7 @@ allowed to insert data from top to bottom and left to right
 Like every other STL container RoseTree can be templated with the data item to
 be held
 ```c++
-Tree<std::string> path_tree(Tree(std::string("/"));
+Tree<std::string> path_tree(std::string("/"));
 ```
 
 ### Tree insertion operations
