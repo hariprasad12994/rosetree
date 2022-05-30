@@ -7,10 +7,6 @@
 #include <stack>
 #include <iostream>
 
-// refer - https://course.ccs.neu.edu/cs5010f18/lecture9.html
-// refer - multiple iter - https://stackoverflow.com/questions/25105730/range-based-for-loops-and-multiple-iterators
-// https://www.fluentcpp.com/2021/09/02/how-to-make-your-classes-compatible-with-range-for-loop/
-// https://algotree.org/algorithms/tree_graph_traversal/
 
 template <typename T>
 class TreeNode {
@@ -19,8 +15,6 @@ class TreeNode {
     TreeNode* first_child;
     TreeNode* first_sibling;
 
-    // The copy and move constructors are wrong! They should take the tree node
-    // as args
     TreeNode(): first_child(nullptr), first_sibling(nullptr) {}
     TreeNode(const T& val): value(val), first_child(nullptr), first_sibling(nullptr) {}
     TreeNode(T&& val): value(std::move(val)), first_child(nullptr), first_sibling(nullptr) {}
@@ -61,7 +55,6 @@ struct PostOrderIterator{
       }
       if(!s.empty()) {
         ptr_ = s.top(); 
-        //s.pop();
       }
       else { ptr_ = nullptr; }
     }
@@ -241,10 +234,6 @@ class Tree {
   using node = TreeNode<T>;
   using node_pointer = TreeNode<T>*;
   using iterator = PreOrderIterator<Tree<T>>;
-
-  // todo? class Compare as template parameter
-  // todo? class Allocator<T> as template paramter
-  // todo: add special memeber functions
 
   Tree(): tree(nullptr) {}
   Tree(TreeNode<T>* head): tree(head) { std::cout << "Tree(TreeNode<T>* head)\n"; }
