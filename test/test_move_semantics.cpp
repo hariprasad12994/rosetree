@@ -19,7 +19,7 @@ struct MyStruct{
 
 auto main(void) -> int {
   std::cout << "[Root] 1\n";
-  auto another_tree = Tree(new TreeNode<MyStruct>(1));
+  Tree<MyStruct> another_tree(MyStruct(1));
   std::cout << '\n';
 
   std::cout << "[emplace_below -> 1] 3, hello\n";
