@@ -235,8 +235,11 @@ class Tree {
   using node_pointer = TreeNode<T>*;
   using iterator = PreOrderIterator<Tree<T>>;
 
-  Tree(): tree(nullptr) {}
+  Tree() = delete;
   Tree(TreeNode<T>* head): tree(head) { std::cout << "Tree(TreeNode<T>* head)\n"; }
+    //TreeNode<T*> new_node = new TreeNode<T>(std::forward<Args>(args)...);
+  template <typename ... Args>
+  Tree(Args ... args): tree(new TreeNode<T>(std::forward<Args>(args)...)) { std::cout << "Tree(Args ... args)\n"; }
   Tree(Tree&& other) { std::cout << "Tree(Tree&& other)\n"; std::swap(tree, other.tree); other.tree = nullptr; }
   Tree& operator=(const Tree& other) { std::cout << "Tree& operator=(const Tree& other)\n"; *this; }
   Tree& operator=(Tree&& other) { std::cout << "Tree& operator=(Tree&& other)\n"; std::swap(tree, other.tree); other.tree = nullptr; return *this; }
