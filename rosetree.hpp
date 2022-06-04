@@ -245,6 +245,11 @@ class Tree {
   Tree& operator=(Tree&& other) { std::cout << "Tree& operator=(Tree&& other)\n"; std::swap(tree, other.tree); other.tree = nullptr; return *this; }
   ~Tree() { clear(); }
 
+  private:
+  typename Tree<T>::TreeNode* tree;
+  Tree(typename Tree<T>::TreeNode* head): tree(head) { std::cout << "Tree(typename Tree<T>::TreeNode* head)\n"; }
+
+  public:
   auto begin() -> iterator {
     return iterator(tree);
   }
@@ -374,11 +379,6 @@ class Tree {
     erase_intern(begin());
     tree = nullptr;
   }
-
-  private:
-  typename Tree<T>::TreeNode* tree;
-  Tree(typename Tree<T>::TreeNode* head): tree(head) { std::cout << "Tree(typename Tree<T>::TreeNode* head)\n"; }
- 
 };
 
 template <typename Tree>
