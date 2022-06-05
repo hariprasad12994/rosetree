@@ -21,6 +21,13 @@ class tree_as_pre_order;
 template <typename T>
 class Tree;
 
+template <typename T>
+typename Tree<T>::TreeNode* copy_util(typename Tree<T>::TreeNode* other);
+
+template <typename T>
+typename Tree<T>::TreeNode* copy(typename Tree<T>::TreeNode* other);
+
+
 template <typename TreeClass>
 struct PostOrderIterator{
   public:
@@ -240,14 +247,26 @@ class Tree {
   Tree() = delete;
   template <typename ... Args>
   Tree(Args ... args): tree(new typename Tree<T>::TreeNode(std::forward<Args>(args)...)) { std::cout << "Tree(Args ... args)\n"; }
+  Tree(const Tree& other) {
+    std::cout << "Tree(const Tree& other)\n";
+    typename Tree<T>::TreeNode* root = copy<T>(other.tree);
+    tree = root;
+  }
   Tree(Tree&& other) { std::cout << "Tree(Tree&& other)\n"; std::swap(tree, other.tree); other.tree = nullptr; }
-  Tree& operator=(const Tree& other) { std::cout << "Tree& operator=(const Tree& other)\n"; *this; }
+  Tree& operator=(const Tree& other) { 
+    std::cout << "Tree& operator=(const Tree& other)\n";
+    typename Tree<T>::TreeNode* root = copy<T>(other.tree);
+    tree = root;
+    return *this;
+  }
   Tree& operator=(Tree&& other) { std::cout << "Tree& operator=(Tree&& other)\n"; std::swap(tree, other.tree); other.tree = nullptr; return *this; }
   ~Tree() { clear(); }
 
   private:
   typename Tree<T>::TreeNode* tree;
   Tree(typename Tree<T>::TreeNode* head): tree(head) { std::cout << "Tree(typename Tree<T>::TreeNode* head)\n"; }
+  friend typename Tree<T>::TreeNode* copy_util<T>(typename Tree<T>::TreeNode* other);
+  friend typename Tree<T>::TreeNode* copy<T>(typename Tree<T>::TreeNode* other);
 
   public:
   auto begin() -> iterator {
@@ -433,6 +452,22 @@ auto tree_to_sstream(PreOrderIterator<Tree<T>> tree, std::stringstream& stream) 
   for(auto tree_elem: IteratorProxy(tree)) {
     stream << tree_elem << " ";
   }
+}
+
+template <typename T>
+typename Tree<T>::TreeNode* copy_util(typename Tree<T>::TreeNode* ptr) {
+  if(ptr == nullptr) 
+    return nullptr;
+
+  auto curr_node = new typename Tree<T>::TreeNode(ptr->value);
+  curr_node->first_child = copy_util<T>(ptr->first_child);
+  curr_node->first_sibling = copy_util<T>(ptr->first_sibling);
+  return curr_node;
+}
+
+template <typename T>
+typename Tree<T>::TreeNode* copy(typename Tree<T>::TreeNode* other) {
+  return copy_util<T>(other);
 }
 
 #endif /*ROSETREE_H*/
