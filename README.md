@@ -11,6 +11,9 @@ like std::transform, std::find etc.
 The data structure is unsorted, unbalanced tree. Users are
 allowed to insert data from top to bottom and left to right
 
+Users are free to use the single header rosetree.hpp in the project
+The container works best with C++14 and above
+
 ## Basic API documentation
 ### Rosetree
 ```c++
@@ -205,8 +208,44 @@ can be discarded if not required.
 todo: Document known bugs
 
 ### Tree deletion operations
-todo: Document individual APIs
-todo: Document on RAII clear
+There are 3 APIs to support deletion operations
+* cut
+  This enables cutting a subtree out of the container and create a new tree
+  container with the node evicted as the root
+  ```c++
+  auto cut(iterator node) -> Tree<T>;
+  ```
+  Example
+  ```c++
+  auto spliced_tree = tree.cut(it);
+  ```
+* erase
+  Deletes a node and all the children below it from the tree container. Requires
+  cautious usage
+  ```c++
+  auto erase(iterator node) -> void;
+  ```
+  Example
+  ```c++
+  auto it = std::find_if(tree.begin(), tree.end(), [](auto elem){ return elem == std::string("etc/"); });
+  tree.erase(it);
+  ```
+
+* clear
+  Clears the complete container
+  ```c++
+  auto clear() -> void;
+  ```
+  Example
+  ```c++
+  tree.clear();
+  // Undefined behavior. Insertion into a tree without root
+  tree.insert_below(tree.begin(), std::string("42"));
+  ```
+
+#### RAII
+The container like every other STL container is cleaned up automatically when it
+goes out of scope
 
 ### Tree iteration
 Currently supported iterators:
@@ -216,6 +255,16 @@ Currently supported iterators:
 
 The default iterator on constructing a tree will be PreOrder iterator. Proxy
 classes are available to convert the default iterator to other types
+```c++
+template <typename Tree>
+class tree_as_level_order;
+
+template<typename Tree>
+class tree_as_pre_order;
+
+template <typename Tree>
+class tree_as_post_order;
+```
 
 ## Roadmap
 Tentative feature road map for the Rosetree Data Structure. Please do note that
@@ -234,6 +283,10 @@ feature which is not concretely planned
 - [x] Automatic memory cleanup on destruction
 - [x] Tree copy - Deep
 - [x] Tree move
+- [ ] Code cleanups for readability
+- [ ] Code cleanups for better exposed public and private API
+- [ ] Optimization - const and const& as much as possible
+- [ ] Traverals with callbacks
 - [ ] API to check if container is empty
 - [ ] Iterators - const versions
 - [ ] Allocator concept for tree nodes?
