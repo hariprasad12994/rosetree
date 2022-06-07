@@ -19,15 +19,19 @@ be held
 // Construct tree with root element containing data "/"
 Tree<std::string> path_tree(std::string("/"));
 
-// Its ensured that the tree always contains a root. Below line causes compilation error stating usage of deleted function
+// Its ensured that the tree always contains a root. 
+// Below line causes compilation error stating usage of deleted function
 Tree<std::string> tree_without_root;
 
-// Copy constructor. Creates a deep copy of path tree into another_path_tree
+// Copy constructor. 
+// Creates a deep copy of path tree into another_path_tree
 Tree<std::string> another_path_tree(path_tree);
 
-// Move constructor. Shallow copies path_tree into yet_another_tree and leave path_tree in a valid but undefined state
+// Move constructor.
+// Moves path_tree into yet_another_tree and leave path_tree in a valid but undefined state
 Tree<std::string> yet_another_tree = std::move(path_tree);
-// Below line is classic use after move and causes undefined behavior
+// Below line is classic use after move
+// Causes undefined behavior
 path_tree.insert(path_tree.begin(), "/");
 ```
 
