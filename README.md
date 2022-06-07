@@ -16,7 +16,17 @@ allowed to insert data from top to bottom and left to right
 Like every other STL container RoseTree can be templated with the data item to
 be held
 ```c++
+// Construct tree with root element containing data "/"
 Tree<std::string> path_tree(std::string("/"));
+// Its ensured that the tree always contains a root
+Tree<std::string> tree_without_root; /* Compile error - usage of deleted function */
+
+// Copy constructor. Creates a deep copy of path tree into another_path_tree
+Tree<std::string> another_path_tree(path_tree);
+
+// Move constructor. Shallow copies path_tree into yet_another_tree and leave path_tree in a valid but undefined state
+Tree<std::string> yet_another_tree = std::move(path_tree);
+path_tree.insert(path_tree.begin(), "/"); // undefined behavior
 ```
 
 ### Tree insertion operations
