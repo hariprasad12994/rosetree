@@ -12,9 +12,52 @@ The data structure is unsorted, unbalanced tree. Users are
 allowed to insert data from top to bottom and left to right
 
 ## Basic API documentation
+### Rosetree
+```c++
+template<
+  class T
+> class Tree;
+```
+#### Member types
+iterator                 PreOrder iterator for the tree container
+#### Member functions
+(constructor)            Constructs the rosetree
+(destructor)             Destructs the rosetree
+operator=                Assigns values to the container
+
+begin                    Returns an iterator to the beginning
+end                      Returns an iterator to the end
+
+insert_below      
+insert_after
+append_child             Inserts elements with respect to a pre-order iterator
+
+emplace_below
+emplace_after
+append_child_by_emplace  Constructs an element in-place at a position with respect to a preorder iterator
+
+cut                      Evict a subtree out of the container as a new container
+erase                    Delete a subtree pointed by iterator
+clear                    Clears the contents
+
 ### Tree construction
 Like every other STL container RoseTree can be templated with the data item to
 be held
+```c++
+// 1
+template <typename ... Args>
+Tree(Args ... args);
+
+// 2
+Tree(const Tree& other);
+Tree& operator=(const Tree& other);
+
+// 3
+Tree(Tree&& other);
+Tree& operator=(Tree&& other);
+```
+
+Detailed illustration
 ```c++
 // Construct tree with root element containing data "/"
 Tree<std::string> path_tree(std::string("/"));
@@ -39,6 +82,12 @@ path_tree.insert(path_tree.begin(), "/");
 Users can insert a new node in any of the three positions relative to the iterator passed as an argument.
 * Below the iterator, as the first child of the node pointed by the iterator
   ```c++
+  auto insert_below(iterator node, const T& data) -> iterator;
+  auto insert_below(iterator node, T&& data) -> iterator;
+  template <typename ... Args>
+  auto emplace_below(iterator node, Args ... args) -> iterator;
+  ```
+  ```c++
   Tree<std::string> tree("root");
   auto it = tree.begin();
 
@@ -58,8 +107,62 @@ Users can insert a new node in any of the three positions relative to the iterat
   // In place construction of node below root
   s_tree.emplace_below(s_tree.begin(), 1, 5.0f, "42"));
   ```
+
 * Below the iterator, as the last child of the node pointed by the iterator
-* After the itetator, as the sibling of the node pointed by the iterator
+  ```c++
+  auto append_child(iterator node, const T& data) -> iterator;
+  auto append_child(iterator node, T&& data) -> iterator;
+  template <typename ... Args>
+  auto append_child_by_emplace(iterator node, Args ... args) -> iterator;
+  ```
+  ```c++
+  Tree<std::string> tree("root");
+  auto it = tree.begin();
+
+  // Insert by value semantics
+  tree.append_child(it, std::string("hello"));
+  
+  // Insert by move semantics
+  std::string some_string = "world";
+  tree.append_child(it, std::move(some_string));
+
+  struct S {
+    int int_mem;
+    float flt_mem;
+    std::string str_mem;
+  };
+  Tree<S> s_tree(2, 10.0f, std::string("root"));
+  // In place construction of node below root
+  s_tree.append_child_by_emplace(s_tree.begin(), 1, 5.0f, "42"));
+  ```
+  
+* After the iterator, as the sibling of the node pointed by the iterator
+  ```c++
+  auto insert_after(iterator node, const T& data) -> iterator;
+  auto insert_after(iterator node, T&& data) -> iterator;
+  template <typename ... Args>
+  auto emplace_after(iterator node, Args ... args) -> iterator;
+  ```
+  ```c++
+  Tree<std::string> tree("root");
+  auto it = tree.begin();
+
+  // Insert by value semantics
+  tree.insert_after(it, std::string("hello"));
+  
+  // Insert by move semantics
+  std::string some_string = "world";
+  tree.insert_after(it, std::move(some_string));
+
+  struct S {
+    int int_mem;
+    float flt_mem;
+    std::string str_mem;
+  };
+  Tree<S> s_tree(2, 10.0f, std::string("root"));
+  // In place construction of node below root
+  s_tree.emplace_after(s_tree.begin(), 1, 5.0f, "42"));
+  ```
 
 #### Notes
 * Only a PreOrder Depth-First iterator can be used for referencing the
@@ -92,7 +195,6 @@ can be discarded if not required.
   // It is also ok to discard the returned iterator
   path_tree.insert_below(usr, std::string("hari/"));
   ```
-todo: Document individual APIs, with move semantics
 todo: Document known bugs
 
 ### Tree deletion operations
@@ -125,6 +227,7 @@ feature which is not concretely planned
 - [x] Automatic memory cleanup on destruction
 - [x] Tree copy - Deep
 - [x] Tree move
+- [ ] API to check if container is empty
 - [ ] Iterators - const versions
 - [ ] Allocator concept for tree nodes?
 - [ ] Container adapter? - Hint. For example std::priority_queue lets users to
