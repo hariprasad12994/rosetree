@@ -70,15 +70,15 @@ is an undefined behavior. The rationale is that the operation is done on a tree
 without a root and such an operation makes no sense.
 * All insertion operations returns an iterator to the newly inserted node which
 can be discarded if not required.
-```c++
-// Stores the returned iterator for further operations
-auto boot = path_tree.insert_below(path_tree.begin(), std::string("boot/"));
-auto bin = path_tree.append_child(path_tree.begin(), std::string("bin/"));
-auto var = path_tree.append_child(path_tree.begin(), std::string("var/"));
-auto usr = path_tree.append_child(path_tree.begin(), std::string("usr/"));
-// It is also ok to discard the returned iterator
-path_tree.insert_below(usr, std::string("hari/"));
-```
+  ```c++
+  // Stores the returned iterator for further operations
+  auto boot = path_tree.insert_below(path_tree.begin(), std::string("boot/"));
+  auto bin = path_tree.append_child(path_tree.begin(), std::string("bin/"));
+  auto var = path_tree.append_child(path_tree.begin(), std::string("var/"));
+  auto usr = path_tree.append_child(path_tree.begin(), std::string("usr/"));
+  // It is also ok to discard the returned iterator
+  path_tree.insert_below(usr, std::string("hari/"));
+  ```
 todo: Document individual APIs, with move semantics
 todo: Document known bugs
 
