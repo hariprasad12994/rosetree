@@ -37,9 +37,29 @@ path_tree.insert(path_tree.begin(), "/");
 
 ### Tree insertion operations
 Users can insert a new node in any of the three positions relative to the iterator passed as an argument.
-* Below the iterator, as first child of the node pointed by the iterator
+* Below the iterator, as the first child of the node pointed by the iterator
+  ```c++
+  Tree<std::string> tree("root");
+  auto it = tree.begin();
+
+  // Insert by value semantics
+  tree.insert_below(it, std::string("hello"));
+  
+  // Insert by move semantics
+  std::string some_string = "world";
+  tree.insert_below(it, std::move(some_string));
+
+  struct S {
+    int int_mem;
+    float flt_mem;
+    std::string str_mem;
+  };
+  Tree<S> s_tree(2, 10.0f, std::string("root"));
+  // In place construction of node below root
+  s_tree.emplace_below(s_tree.begin(), 1, 5.0f, "42"));
+  ```
 * Below the iterator, as the last child of the node pointed by the iterator
-* After the node pointed by the iteator
+* After the itetator, as the sibling of the node pointed by the iteator
 
 Note that only a PreOrder Depth-First iterator can be used for referencing the
 positions in the insertion APIs. Refer chapter "Tree iteration" for more details
