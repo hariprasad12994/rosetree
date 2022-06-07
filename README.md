@@ -59,17 +59,16 @@ Users can insert a new node in any of the three positions relative to the iterat
   s_tree.emplace_below(s_tree.begin(), 1, 5.0f, "42"));
   ```
 * Below the iterator, as the last child of the node pointed by the iterator
-* After the itetator, as the sibling of the node pointed by the iteator
+* After the itetator, as the sibling of the node pointed by the iterator
 
-Note that only a PreOrder Depth-First iterator can be used for referencing the
+#### Notes
+* Only a PreOrder Depth-First iterator can be used for referencing the
 positions in the insertion APIs. Refer chapter "Tree iteration" for more details
 about iterators
-
-Note that inserting into an empty tree, for example after clearing the container,
+* Inserting into an empty tree, for example after clearing the container,
 is an undefined behavior. The rationale is that the operation is done on a tree
 without a root and such an operation makes no sense.
-
-All insertion operations returns an iterator to the newly inserted node which
+* All insertion operations returns an iterator to the newly inserted node which
 can be discarded if not required.
 ```c++
 // Stores the returned iterator for further operations
