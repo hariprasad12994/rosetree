@@ -19,8 +19,11 @@ template<
 > class Tree;
 ```
 #### Member types
+<pre>
 iterator                 PreOrder iterator for the tree container
+</pre>
 #### Member functions
+<pre>
 (constructor)            Constructs the rosetree
 (destructor)             Destructs the rosetree
 operator=                Assigns values to the container
@@ -39,6 +42,7 @@ append_child_by_emplace  Constructs an element in-place at a position with respe
 cut                      Evict a subtree out of the container as a new container
 erase                    Delete a subtree pointed by iterator
 clear                    Clears the contents
+</pre>
 
 ### Tree construction
 Like every other STL container RoseTree can be templated with the data item to
@@ -87,6 +91,7 @@ Users can insert a new node in any of the three positions relative to the iterat
   template <typename ... Args>
   auto emplace_below(iterator node, Args ... args) -> iterator;
   ```
+  Detailed illustration
   ```c++
   Tree<std::string> tree("root");
   auto it = tree.begin();
@@ -115,6 +120,7 @@ Users can insert a new node in any of the three positions relative to the iterat
   template <typename ... Args>
   auto append_child_by_emplace(iterator node, Args ... args) -> iterator;
   ```
+  Detailed illustration
   ```c++
   Tree<std::string> tree("root");
   auto it = tree.begin();
@@ -143,6 +149,7 @@ Users can insert a new node in any of the three positions relative to the iterat
   template <typename ... Args>
   auto emplace_after(iterator node, Args ... args) -> iterator;
   ```
+  Detailed illustration
   ```c++
   Tree<std::string> tree("root");
   auto it = tree.begin();
