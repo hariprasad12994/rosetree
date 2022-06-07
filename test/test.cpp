@@ -137,6 +137,7 @@ auto test_tree_copy(Tree<std::string>& tree) -> void {
   std::string expected_op = "/ arch arm64 boot/ bin/ var/ tmp/ etc/ usr/ hari/ Projects/ Documents/ admin/ opt/ ";
   std::stringstream op_1;
   std::stringstream op_2;
+  std::stringstream op_3;
 
   Tree tree_copy(tree);
   tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(tree_copy.begin(), op_1);
@@ -149,17 +150,33 @@ auto test_tree_copy(Tree<std::string>& tree) -> void {
   std::cout << op_2.str() << '\n';
   assert(op_2.str() == expected_op);
   std::cout << "[PASSED] " << __func__ << '\n';
+
+  Tree<std::string> yet_another_copy("42");
+  yet_another_copy = tree;
+  tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(yet_another_copy.begin(), op_3);
+  std::cout << op_3.str() << '\n';
+  assert(op_3.str() == expected_op);
+  std::cout << "[PASSED] " << __func__ << '\n';
 }
 
 auto test_tree_move(Tree<std::string>& tree) -> void {
   std::string expected_op = "/ arch arm64 boot/ bin/ var/ tmp/ etc/ usr/ hari/ Projects/ Documents/ admin/ opt/ ";
-  std::stringstream op;
+  std::stringstream op_1;
+  std::stringstream op_2;
 
   Tree tree_copy(tree);
   Tree tree_by_move = std::move(tree_copy);
-  tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(tree_by_move.begin(), op);
-  std::cout << op.str() << '\n';
-  assert(op.str() == expected_op);
+  tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(tree_by_move.begin(), op_1);
+  std::cout << op_1.str() << '\n';
+  assert(op_1.str() == expected_op);
+  std::cout << "[PASSED] " << __func__ << '\n';
+
+  Tree another_tree_copy(tree);
+  Tree<std::string> another_tree_by_move("42");
+  another_tree_by_move = std::move(another_tree_copy);
+  tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(another_tree_by_move.begin(), op_2);
+  std::cout << op_2.str() << '\n';
+  assert(op_2.str() == expected_op);
   std::cout << "[PASSED] " << __func__ << '\n';
 }
 
