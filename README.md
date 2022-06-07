@@ -117,14 +117,14 @@ feature which is not concretely planned
 - [x] Insertion APIs - Value Semantics
 - [x] Insertion APIs - Move Semantics
 - [x] Insertion APIs - Emplacing / In place construction of nodes
-- [x] Deletion - Erase node
+- [ ] Deletion - Erase node
+- [x] Deletion - Erase subtree
 - [x] Deletion - Subtree eviction by cutting
 - [x] Deletion - Clear container
 - [ ] Iterators - InOrder, LeafOrder
 - [x] Automatic memory cleanup on destruction
-- [ ] Tree copy - Deep
-- [ ] Tree move
-- [ ] Tree head manipulation
+- [x] Tree copy - Deep
+- [x] Tree move
 - [ ] Iterators - const versions
 - [ ] Allocator concept for tree nodes?
 - [ ] Container adapter? - Hint. For example std::priority_queue lets users to
@@ -133,6 +133,7 @@ feature which is not concretely planned
 - [ ] Algorithms
   - [ ] Tree Merge
   - [ ] Tree Diff
+  - [ ] Serialization and Deserialization
   - [ ] Path Manipulation
   - [ ] Tree Rotate
   - [ ] Mirror
