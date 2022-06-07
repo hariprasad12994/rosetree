@@ -66,8 +66,21 @@ Users can insert a new node in any of the three positions relative to the iterat
 positions in the insertion APIs. Refer chapter "Tree iteration" for more details
 about iterators
 * Inserting into an empty tree, for example after clearing the container,
-is an undefined behavior. The rationale is that the operation is done on a tree
-without a root and such an operation makes no sense.
+is an undefined behavior. The rationale is that the operation is done on a tree without a root and such an operation makes no sense.
+  ```c++
+  Tree<int> integer_tree(1);
+  integer_tree.clear();
+  // Undefined behavior
+  integer_tree.insert_below(integer_tree.begin(), 42);
+
+  // Alternative
+  Tree<int> integer_tree(1);
+  integer_tree.clear();
+  Tree<int> new_integer_tree(42);
+  // Copy the new tree into the original tree. Also it is fine to move the tree
+  // by marking it with std::move
+  integer_tree = new_integer_tree;
+  ```
 * All insertion operations returns an iterator to the newly inserted node which
 can be discarded if not required.
   ```c++
