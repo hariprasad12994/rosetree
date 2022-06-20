@@ -246,25 +246,30 @@ class Tree {
 
   Tree() = delete;
   template <typename ... Args>
-  Tree(Args ... args): tree(new typename Tree<T>::TreeNode(std::forward<Args>(args)...)) { std::cout << "Tree(Args ... args)\n"; }
+  Tree(Args ... args): tree(new typename Tree<T>::TreeNode(std::forward<Args>(args)...)) { }
   Tree(const Tree& other) {
-    std::cout << "Tree(const Tree& other)\n";
     typename Tree<T>::TreeNode* root = copy<T>(other.tree);
     tree = root;
   }
-  Tree(Tree&& other) { std::cout << "Tree(Tree&& other)\n"; std::swap(tree, other.tree); other.tree = nullptr; }
+  Tree(Tree&& other) {
+    std::swap(tree, other.tree);
+    other.tree = nullptr;
+  }
   Tree& operator=(const Tree& other) { 
-    std::cout << "Tree& operator=(const Tree& other)\n";
     typename Tree<T>::TreeNode* root = copy<T>(other.tree);
     tree = root;
     return *this;
   }
-  Tree& operator=(Tree&& other) { std::cout << "Tree& operator=(Tree&& other)\n"; std::swap(tree, other.tree); other.tree = nullptr; return *this; }
+  Tree& operator=(Tree&& other) { 
+    std::swap(tree, other.tree); 
+    other.tree = nullptr; 
+    return *this; 
+  }
   ~Tree() { clear(); }
 
   private:
   typename Tree<T>::TreeNode* tree;
-  Tree(typename Tree<T>::TreeNode* head): tree(head) { std::cout << "Tree(typename Tree<T>::TreeNode* head)\n"; }
+  Tree(typename Tree<T>::TreeNode* head): tree(head) { }
   friend typename Tree<T>::TreeNode* copy_util<T>(typename Tree<T>::TreeNode* other);
   friend typename Tree<T>::TreeNode* copy<T>(typename Tree<T>::TreeNode* other);
 
