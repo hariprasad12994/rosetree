@@ -45,6 +45,8 @@ append_child_by_emplace  Constructs an element in-place at a position with respe
 cut                      Evict a subtree out of the container as a new container
 erase                    Delete a subtree pointed by iterator
 clear                    Clears the contents
+
+empty                    Checks if container is empty
 </pre>
 
 ### Tree construction
@@ -266,6 +268,21 @@ template <typename Tree>
 class tree_as_post_order;
 ```
 
+### Tree querying
+
+* empty <\b>
+  Checks if the container is empty. ie if the tree has no nodes in it
+
+  ```c++
+  auto empty() -> bool;
+  ````
+  Example
+  ```c++
+  auto is_empty = tree.empty();
+  if(!is_empty)
+    return true;
+  ```
+
 ## Roadmap
 Tentative feature road map for the Rosetree Data Structure. Please do note that
 there might few features which might not be implemented and few might not be
@@ -287,7 +304,7 @@ feature which is not concretely planned
 - [ ] Code cleanups for better exposed public and private API
 - [ ] Optimization - const and const& as much as possible
 - [ ] Traverals with callbacks
-- [ ] API to check if container is empty
+- [x] API to check if container is empty
 - [ ] Iterators - const versions
 - [ ] Allocator concept for tree nodes?
 - [ ] Container adapter? - Hint. For example std::priority_queue lets users to
