@@ -17,6 +17,7 @@ auto test_postorder_subtree_traversal(Tree<std::string>& path_tree) -> void;
 auto test_preorder_subtree_traversal(Tree<std::string>& path_tree) -> void;
 auto test_tree_copy(Tree<std::string>& path_tree) -> void;
 auto test_tree_move(Tree<std::string>& path_tree) -> void;
+auto test_tree_empty(Tree<std::string>& path_tree) -> void;
 auto test_tree_node_delete(Tree<std::string>& path_tree) -> void;
 auto test_subtree_delete(Tree<std::string>& path_tree) -> void;
 auto test_tree_delete(Tree<std::string>& path_tree) -> void;
@@ -49,6 +50,7 @@ auto main(void) -> int {
   test_preorder_subtree_traversal(path_tree);
   test_tree_copy(path_tree);
   test_tree_move(path_tree);
+  test_tree_empty(path_tree);
   test_tree_node_delete(path_tree);
   test_subtree_delete(path_tree);
   test_tree_delete(path_tree);
@@ -141,20 +143,15 @@ auto test_tree_copy(Tree<std::string>& tree) -> void {
 
   Tree tree_copy(tree);
   tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(tree_copy.begin(), op_1);
-  std::cout << op_1.str() << '\n';
   assert(op_1.str() == expected_op);
-  std::cout << "[PASSED] " << __func__ << '\n';
 
   Tree tree_another_copy = tree;
   tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(tree_another_copy.begin(), op_2);
-  std::cout << op_2.str() << '\n';
   assert(op_2.str() == expected_op);
-  std::cout << "[PASSED] " << __func__ << '\n';
 
   Tree<std::string> yet_another_copy("42");
   yet_another_copy = tree;
   tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(yet_another_copy.begin(), op_3);
-  std::cout << op_3.str() << '\n';
   assert(op_3.str() == expected_op);
   std::cout << "[PASSED] " << __func__ << '\n';
 }
@@ -167,16 +164,21 @@ auto test_tree_move(Tree<std::string>& tree) -> void {
   Tree tree_copy(tree);
   Tree tree_by_move = std::move(tree_copy);
   tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(tree_by_move.begin(), op_1);
-  std::cout << op_1.str() << '\n';
   assert(op_1.str() == expected_op);
-  std::cout << "[PASSED] " << __func__ << '\n';
 
   Tree another_tree_copy(tree);
   Tree<std::string> another_tree_by_move("42");
   another_tree_by_move = std::move(another_tree_copy);
   tree_to_sstream<std::string, tree_as_pre_order<Tree<std::string>>>(another_tree_by_move.begin(), op_2);
-  std::cout << op_2.str() << '\n';
   assert(op_2.str() == expected_op);
+  std::cout << "[PASSED] " << __func__ << '\n';
+}
+
+auto test_tree_empty(Tree<std::string>& path_tree) -> void {
+  Tree tree_copy(path_tree);
+  assert(tree_copy.empty() == false);
+  tree_copy.clear();
+  assert(tree_copy.empty() != false);
   std::cout << "[PASSED] " << __func__ << '\n';
 }
 

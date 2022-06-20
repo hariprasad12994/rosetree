@@ -368,6 +368,10 @@ class Tree {
     return append_child(node, new_node);
   }
 
+  auto empty() -> bool {
+    return tree == nullptr;
+  }
+
   auto cut(iterator node) -> Tree<T> {
     if(node != begin()) {
       iterator left_sibling = iterator(nullptr);
