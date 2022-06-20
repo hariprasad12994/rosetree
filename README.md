@@ -210,6 +210,10 @@ can be discarded if not required.
 todo: Document known bugs
 
 ### Tree deletion operations
+#### RAII
+The container like every other STL container is cleaned up automatically when it
+goes out of scope
+
 There are 3 APIs to support deletion operations
 * cut<br/>
   This enables cutting a subtree out of the container and create a new tree
@@ -245,9 +249,6 @@ There are 3 APIs to support deletion operations
   tree.insert_below(tree.begin(), std::string("42"));
   ```
 
-#### RAII
-The container like every other STL container is cleaned up automatically when it
-goes out of scope
 
 ### Tree iteration
 Currently supported iterators:
@@ -270,7 +271,7 @@ class tree_as_post_order;
 
 ### Tree querying
 
-* empty <\b>
+* empty <br/>
   Checks if the container is empty. ie if the tree has no nodes in it
 
   ```c++
