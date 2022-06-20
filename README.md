@@ -113,7 +113,7 @@ Users can insert a new node in any of the three positions relative to the iterat
   };
   Tree<S> s_tree(2, 10.0f, std::string("root"));
   // In place construction of node below root
-  s_tree.emplace_below(s_tree.begin(), 1, 5.0f, "42"));
+  s_tree.emplace_below(s_tree.begin(), 1, 5.0f, "42");
   ```
 
 * Below the iterator, as the last child of the node pointed by the iterator
@@ -142,7 +142,7 @@ Users can insert a new node in any of the three positions relative to the iterat
   };
   Tree<S> s_tree(2, 10.0f, std::string("root"));
   // In place construction of node below root
-  s_tree.append_child_by_emplace(s_tree.begin(), 1, 5.0f, "42"));
+  s_tree.append_child_by_emplace(s_tree.begin(), 1, 5.0f, "42");
   ```
   
 * After the iterator, as the sibling of the node pointed by the iterator
@@ -171,7 +171,7 @@ Users can insert a new node in any of the three positions relative to the iterat
   };
   Tree<S> s_tree(2, 10.0f, std::string("root"));
   // In place construction of node below root
-  s_tree.emplace_after(s_tree.begin(), 1, 5.0f, "42"));
+  s_tree.emplace_after(s_tree.begin(), 1, 5.0f, "42");
   ```
 
 #### Notes
@@ -209,7 +209,7 @@ todo: Document known bugs
 
 ### Tree deletion operations
 There are 3 APIs to support deletion operations
-* cut
+* cut<br/>
   This enables cutting a subtree out of the container and create a new tree
   container with the node evicted as the root
   ```c++
@@ -219,7 +219,7 @@ There are 3 APIs to support deletion operations
   ```c++
   auto spliced_tree = tree.cut(it);
   ```
-* erase
+* erase<br/>
   Deletes a node and all the children below it from the tree container. Requires
   cautious usage
   ```c++
@@ -231,7 +231,7 @@ There are 3 APIs to support deletion operations
   tree.erase(it);
   ```
 
-* clear
+* clear<br/>
   Clears the complete container
   ```c++
   auto clear() -> void;
