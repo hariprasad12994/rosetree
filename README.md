@@ -47,6 +47,8 @@ erase                    Delete a subtree pointed by iterator
 clear                    Clears the contents
 
 empty                    Checks if container is empty
+size                     Returns the number of nodes in the tree
+depth                    Returns the depth of the tree
 </pre>
 
 ### Tree construction
@@ -276,13 +278,35 @@ class tree_as_post_order;
 
   ```c++
   auto empty() -> bool;
-  ````
+  ```
   Example
   ```c++
   auto is_empty = tree.empty();
   if(!is_empty)
     return true;
   ```
+
+* size <br/>
+  Returns the current number of nodes in the tree
+
+  ```c++
+  auto size() -> std::size_t;
+  ```
+  Example
+  ```c++
+  auto size = tree.size();
+  ```
+
+* depth <br/>
+  Returns the current depth of the tree
+  ```c++
+  auto depth() -> std::size_t;
+  ```
+  Example
+  ```c++
+  auto height = tree.depth();
+  ```
+
 
 ## Roadmap
 Tentative feature road map for the Rosetree Data Structure. Please do note that
@@ -301,6 +325,7 @@ feature which is not concretely planned
 - [x] Automatic memory cleanup on destruction
 - [x] Tree copy - Deep
 - [x] Tree move
+- [x] Tree query APIs - size, depth, empty
 - [ ] Code cleanups for readability
 - [ ] Code cleanups for better exposed public and private API
 - [ ] Optimization - const and const& as much as possible

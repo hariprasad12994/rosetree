@@ -372,6 +372,22 @@ class Tree {
     return tree == nullptr;
   }
 
+  auto size() -> std::size_t {
+    std::size_t size = 0;
+    std::for_each(begin(), end(), [&size](auto const& elem){ size++; });
+    return size;
+  }
+
+  auto depth(typename Tree<T>::TreeNode* root) -> std::size_t {
+    if(root == nullptr)
+      return 0;
+    return std::max(1 + depth(root->first_child), depth(root->first_sibling));
+  }
+
+  auto depth() -> std::size_t {
+    return depth(tree);
+  }
+
   auto cut(iterator node) -> Tree<T> {
     if(node != begin()) {
       iterator left_sibling = iterator(nullptr);
